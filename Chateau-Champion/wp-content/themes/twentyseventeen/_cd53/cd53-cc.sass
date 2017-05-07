@@ -1,0 +1,854 @@
+// cd53-cc.sass   -  DC mars 2017
+// info: single-line comments are not compiled..
+// info: brackets.json -> "outputStyle": "expand"
+
+// palette Château Champion
+$mainColor: #a90008	// H1..n, couleur principale  
+$altColor: #8d7963 	// couleur alternative
+$altColorTr: #c6bcb1 // "" tramée
+$altColor10pc: #f3f1ef // altColor à 10%
+$lightTaint: #e3c4a7 // legacy BG color
+$lightTaint50pc: #f1e1d2 // 50%
+$lightTaint33pc: #f6ece2 // 33%
+$coulAssoc1: #d23d77 // Fuschia
+$coulAssoc2: #b5bf4f // Vert lumière
+$coulAssoc3: #a4cdc9 // Bleu pastel
+$coulAssoc4: #fdac53 // Abricot
+$coulAssoc425pc: #feead4
+$or: #d2ab67
+$argent: #a7a9ac
+$bronze: #a86127
+
+// fonctions globales
+=css3($prop,$val)
+	#{$prop}: $val
+	-webkit-#{$prop}: $val
+	-ms-#{$prop}: $val
+=menuBullet($icon, $size)
+	&:after
+		$type: "\2022"
+		@if $icon == bullet { $type: "\2022" }
+		@if $icon == rarrow { $type: "\2023" }
+		@if $icon == tiret  { $type: "\2043" }
+		@if $size == '' { $size: 14px }
+		content: $type
+		color: $mainColor
+		position: absolute
+		top: -1px
+		right: -3px
+		font-size: $size
+// '\26AB'
+=millBullet($prop)
+	@if $prop == '' { $prop: '\26AB' }
+	content: $prop
+	position: absolute
+	padding-right: 7px
+	font-size: 16px
+	top: 0px
+	left: -18px
+=millCircle($prop)
+	content: ''
+	width: 11px
+	height: 11px
+	border-radius: 50%
+	position: absolute
+	top: 3px
+	left: -16px
+	
+	
+
+// fonts
+@import 'https://fonts.googleapis.com/css?family=Overlock';  // menu
+//@import 'https://fonts.googleapis.com/css?family=Lato';
+
+// -Styles globaux-
+*, H1, H2, H3, H4
+	font-family: overlock
+
+H1, H2
+	color: $mainColor
+H2.trfs SPAN
+	background-color: $coulAssoc4
+	color: white
+	padding: .02em .3em
+H3.trfs
+	position: relative
+	padding: .3em 1.4em
+	&:before
+		content: '\25A0'
+		color: $coulAssoc4
+		position: absolute
+		padding-right: 4px
+		font-size: 16px
+		top: 10px
+		left: 8px
+H3, H4
+	color: $altColor
+
+
+.page .panel-content .entry-title
+	color: $mainColor
+	font-size: 20px
+
+// Disclaimer
+BODY.dsclm
+	overflow: hidden
+#dsclm
+	position: fixed 
+	width: 100%
+	height: auto
+	background: url(fond-papier.gif)
+	z-index: 999
+	display: inline-block
+	padding: 20px
+	>DIV
+		border: 1px dotted $mainColor
+		padding: 10px
+	@media screen and (min-width: 48em)
+		width: 500px
+		height: auto
+		top: 100px
+		left: 50%
+		margin-left: -250px
+		box-shadow: 0px 0px 7px black
+	P
+		font-size: 18px
+		margin-bottom: 20px
+		@media screen and (min-width: 48em)
+			font-size: 22px
+			margin-bottom: 25px
+		text-align: center
+		&:first-child
+			color: $mainColor
+			margin-top: 10px
+			font-size: 20px
+			@media screen and (min-width: 48em)
+				margin-top: 40px
+				font-size: 23px
+		&:last-child
+			font-size: 16px
+	BUTTON.btn-oui,
+	BUTTON.btn-non
+		border: 1px solid $mainColor // transparent
+		//background-color: $altColorTr - 30%
+		background-color: transparent
+		color: $mainColor  
+		padding: 20px 30px
+		&:hover 
+			border: 1px solid $coulAssoc4 // transparent
+	BUTTON:first-child
+		margin-right: 40px
+	BUTTON:hover
+		border: 2px solid $mainColor
+#odsclm
+	background-color: rgba(0,0,0,.8)
+	content: ''
+	width: 100%
+	height: 150%
+	top: 0
+	left: 0
+	position: absolute
+	z-index: 998
+
+
+
+// Menu principal
+.navigation-top
+	background-color: $lightTaint33pc
+	border-bottom: 1px solid $mainColor
+	@media screen and (min-width: 48em)
+		.wrap
+			text-align: center
+			max-width: 960px; /* 1000px; - Voir styles.css */
+			.main-navigation
+				display: inline-block
+	A
+		color: $mainColor
+	@media screen and (min-width: 48em)
+		font-size: 15px
+.main-navigation
+	box-shadow: none
+			
+.main-navigation a:hover
+	color: $altColor
+.main-navigation li li:hover > a, 
+.main-navigation li li a:hover
+	color: $mainColor
+	background-color: $altColor10pc
+.main-navigation LI LI
+	border-bottom: 1px dotted $coulAssoc4 + 30%
+.navigation-top .current-menu-item > a, 
+.navigation-top .current_page_item > a,	
+.navigation-top .current-menu-item > a:hover, 
+.navigation-top .current_page_item > a:hover
+	color: $mainColor !important
+	background-color: $altColor10pc - 20%
+.logo-in-nav
+	position: fixed
+	top: -100px
+	+css3(transition,all .5s ease-out)
+	left: 50%
+	margin-left: -432px
+	width: 150px
+	z-index: 9
+	&.fixed	
+		top: 18px
+		+css3(transition,all .5s ease-out)
+.admin-bar .logo-in-nav.fixed
+	top: 50px
+// flèche d'invite à scroller
+.action-navigation
+	display: none
+.menu-scroll-down  
+	display: none !important
+.social-navigation
+	display: none
+	margin-bottom: 0
+
+
+// Menu version Mobile et Tablet
+@media screen and (max-width: 47.9em)
+	.navigation-top
+		position: fixed 
+		top: 0
+		width: 100%
+		z-index: 10
+		A
+			font-weight: normal
+	.admin-bar .navigation-top
+		position: absolute
+		top: 0
+	.menu-toggle
+		margin: 1px 0 2px 0
+		padding-right: 20px
+		width: 100%
+		text-align: right
+		.icon
+			width: 1.6em
+			height: 1.6em
+			color: $altColor
+		&:focus
+			outline: none
+			background-color: transparent
+	.logo-in-nav
+		top: 5px
+		left: 50%
+		margin-left: -70px
+		z-index: 12
+		width: 140px
+	.admin-bar .logo-in-nav
+		position: absolute
+	.menu-menu-principal-container
+		width: 100%
+	.js .main-navigation
+		box-shadow: none
+		UL
+			background-color: #d7d0c9
+			// position: relative
+		>DIV >UL
+			+css3(transition,all .5s ease-out)
+		LI
+			border-bottom: 1px solid $coulAssoc4
+			A
+				padding-left: 5px
+			LI
+				&:last-child
+					border-bottom: 0
+		.action-navigation
+			display: none
+			A
+				color: $altColor
+				&:before
+					content: '>'
+					color: $coulAssoc4
+					font-size: 20px
+					line-height: 20px
+					padding-right: 2px
+		&.toggled-on
+			box-shadow: 0 10px 20px rgba(0,0,0,.46)
+			>DIV >UL
+				+css3(transition,all .5s ease-out)
+			.action-navigation
+				display: block
+				UL.menu-action
+					display: block
+					LI:last-child
+						border-bottom: 0
+						padding-bottom: 10px
+			.social-navigation
+				display: block !important
+				margin-top: 0
+				margin-bottom: 0
+				UL
+					display: block
+					A
+						background-color: transparent
+						&:hover
+							background-color: transparent
+						.icon
+							display: inline-block
+							color: white
+							width: 34px
+							height: 24px
+							top: 3px
+				.social-links-menu
+					background-color: $mainColor
+					text-align: center
+					LI
+						border-bottom: 0
+	.dropdown-toggle
+		color: $altColor
+		&:focus
+			outline: 0
+		.icon
+			width: 1.4em
+			height: 1.3em 
+
+	
+// Contact Form 7
+.wpcf7-form
+	position: relative
+	.wpcf7-response-output
+		position: absolute
+		left: 0px
+		bottom: 60px
+		margin-top: -58px
+		background-color: $coulAssoc4
+		border: 0 !important
+		&.wpcf7-mail-sent-ok
+			background-color: $coulAssoc2
+	TEXTAREA
+		font-size: 14px
+	input[type="submit"]
+		background-color: $mainColor
+		&:hover
+			background-color: $mainColor - 20%
+	
+	
+// Menu Social
+@media screen and (min-width: 48em)
+	.social-navigation
+		clear: none
+		float: none
+		margin-bottom: 0
+		width: auto
+		z-index: 100
+		position: fixed
+		top: 12px
+		right: 20px
+		display: none
+		&.socon
+			display: block
+		A
+			background-color: white
+			box-shadow: 0px 0px 3px #888888;
+			.icon
+				color: $altColor
+				width: 22px
+			&:focus, &:active, &:visited
+				background-color: white
+			&:hover
+				background-color: $mainColor
+				.icon
+					color: white	
+	.admin-bar .social-navigation
+		top: 44px
+	.icon.icon-flag-en
+		height: 16px
+		top: 12px
+		width: 22px
+		vertical-align: top
+
+	
+// Le grand visuel d'accueil contient une ombre en dégradé
+//.custom-header-media
+	&:before	
+		background: initial
+#post-11
+	display: none
+.site-branding 
+	.wrap
+		text-align: center
+	.site-branding-text
+		text-shadow: 0px 0px 8px #000000
+		padding-top: 20px
+	.site-description
+		font-size: 22px 
+	.custom-logo-link
+		display: none
+	.logo-mono
+		position: relative
+		opacity: .4
+
+.page.page-one-column .entry-header, 
+.twentyseventeen-front-page.page-one-column .entry-header
+	margin-bottom: 2em 
+
+// Content-Views
+H4.pt-cv-title A
+	color: $mainColor 
+	font-weight: normal
+	font-size: 20px
+	&:hover
+		box-shadow: inset 0 0 0 rgba(0, 0, 0, 0), 0 2px 0 rgba(141, 121, 99, 1)
+.pt-cv-wrapper .btn-success,
+.pt-cv-wrapper .btn-success.active, 
+.pt-cv-wrapper .btn-success:active, 
+.pt-cv-wrapper .btn-success:hover, 
+.pt-cv-wrapper .btn-success:focus, 
+.pt-cv-wrapper .btn-success.focus,
+.pt-cv-wrapper .open>.dropdown-toggle.btn-success,
+.pt-cv-wrapper .open>.dropdown-toggle.btn-success:focus,
+.pt-cv-wrapper .open>.dropdown-toggle.btn-success:hover,
+.pt-cv-wrapper .open>.dropdown-toggle.btn-success:active,
+.pt-cv-wrapper .open>.dropdown-toggle.btn-success.active,
+.postl,
+.postl:active,
+.postl:focus
+	background-color: transparent
+	border: 0
+	color: $altColor
+	border-radius: 0
+	padding: 3px 6px
+	.icon
+		top: -0.3em
+		left: -0.2em
+.postl
+	box-shadow: none !important
+	color: $altColor
+	font-size: 14px
+	&:hover
+		color: $altColor !important
+		box-shadow: inset 0 0 0 rgba(0, 0, 0, 0), 0 2px 0 rgba(141, 121, 99, 1) !important
+.pt-cv-wrapper .btn-success:hover
+	color: $altColor
+	box-shadow: inset 0 0 0 rgba(0, 0, 0, 0), 0 2px 0 rgba(141, 121, 99, 1)
+.pt-cv-view
+	.pt-cv-meta-fields a
+		color: $mainColor
+.pt-cv-view .pt-cv-ifield
+	//background-color: white
+	H4,
+	.pt-cv-content
+		padding: 5px
+	H4
+		padding-top: 0px
+		margin-bottom: 0
+// Pagination
+.pt-cv-pagination-wrapper
+	text-align: center
+	.pagination>LI>A
+		color: $altColor
+		&:hover, 
+		&:focus
+			color: $altColor
+			box-shadow: none
+			-webkit-box-shadow: none
+	.pagination>.active>A
+		background-color: $altColor
+		//color: $mainColor
+		&:hover, 
+		&:focus
+			background-color: $altColor
+			color: $altColor
+			box-shadow: none
+			-webkit-box-shadow: none
+	.pagination a:not(.prev):not(.next):hover
+		color: $altColor + 40%
+		background-color: $altColor
+		box-shadow: none
+		-webkit-box-shadow: none
+//#panel1,
+#panel2
+	.pt-cv-view .pt-cv-ifield
+		min-height: 380px
+		background-color: white // $altColor10pc
+		box-shadow: 0px 0px 7px $altColorTr
+		-webkit-box-shadow: 0px 0px 7px $altColorTr
+		H4
+			padding: 20px 20px 5px 20px
+		.pt-cv-content
+			padding: 5px 20px 5px 20px
+	.entry-content
+		a img
+			padding: 5px
+			border-bottom: 4px solid $mainColor !important
+.entry-content 
+	a 
+		&:hover
+			text-decoration: none
+			box-shadow: none
+		img
+			-webkit-box-shadow: none
+			box-shadow: none
+			width: 100%	
+	UL
+		list-style: none
+		LI 
+			&:before
+				content: '\2022'
+				font-size: 20px
+				color: $coulAssoc4
+				font-weight: bold
+				margin-right: 5px
+			LI
+				&:before
+					color: $coulAssoc1
+.entry-footer .edit-link a.post-edit-link
+	color: black
+	background-color: transparent
+	&:hover
+		background-color: transparent
+		text-decoration: underline
+.pt-cv-content-item
+	padding-top: 5px
+// mask read-more link from CV Post grid
+.link-more
+	display: none
+
+// Panel1 - Le Château
+#panel1
+	background-color: $altColor10pc
+// Panel2 - Nos Productions
+#panel2
+	background: url(fond-papier.gif) //background-color: $altColor
+// Panel3 - Oenotourisme
+#panel3
+	background-color: $coulAssoc425pc
+//
+.pt-cv-ifield
+	A
+		img
+			border-bottom: 4px solid $coulAssoc4
+			width: 100%
+// Panel4 - Actus
+#panel4
+	.entry-content 
+		A 
+			IMG
+				width: 200px  // pour avoir thumbnail calé à gauche
+				border-bottom: 0px
+	
+.site-footer
+	background-color: $lightTaint33pc
+	border-top: 1px dotted $altColor
+	H2
+		color: $mainColor
+		font-size: 14px
+	
+// pied de page
+.site-info
+	text-align: center 
+	float: none
+	width: auto
+	color: $altColor
+
+// nous-trouver
+.nous-trouver
+	@media screen and (min-width: 48em)
+		float: left
+		width: 36%
+		display: table-cell
+.formp
+	@media screen and (min-width: 48em)
+		display: table
+		.demil,
+		.demir
+			display: inline-block
+			width: 47%
+		.demil
+			margin-right: 5.33%
+		SELECT
+			width: 100%
+			padding: 0 10px
+			OPTION
+				padding: 10px
+		
+// Styles de page (hors .twentyseventeen-front-page)
+BODY:not(.twentyseventeen-front-page)
+	.site-content-contain
+		background-color: $altColor10pc
+		min-height: 400px
+		H1.entry-title
+			color: $mainColor
+			font-size: 30px
+			font-weight: normal
+			margin-top: 40px
+			letter-spacing: 0.02em
+			text-transform: none
+		H1.page-title
+			color: $altColor
+			margin-top: 40px
+		H2.entry-title A
+			color: $mainColor
+			box-shadow: none
+			&:hover
+				box-shadow: inset 0 -1px 0 $altColor
+	.entry-content
+		P, DIV
+			A 
+				box-shadow: inset 0 -1px 0 $mainColor
+				&:hover
+					box-shadow: inset 0 -1px 0 $altColor
+		H4
+			A
+				box-shadow: none
+				&:hover
+					box-shadow: inset 0 -1px 0 $altColor	
+		A.pt-cv-readmore,
+		.pagination LI A
+			box-shadow: none
+			&:hover
+				box-shadow: inset 0 -1px 0 $altColor
+		.pt-cv-ifield
+			padding-bottom: 20px
+			IMG.pull-left
+				width: 200px  // pour avoir thumbnail calé à gauche
+				border-bottom: 0
+		// Boutons orange
+		BUTTON
+			background-color: $coulAssoc4
+			font-weight: normal
+			padding: .8em 1.6em
+	// Fiche Production
+	.chateau
+		IMG
+			@media screen and (min-width: 48em)
+				float: left
+				margin-right: 40px
+				margin-bottom: 50px
+		.AOC
+			background-color: $mainColor
+			color: white
+			font-weight: bold
+			font-size: 14px
+			padding: 1px 5px
+		H2
+			clear: none
+			padding-top: 0.2em
+		.millesimes
+			display: table
+			>DIV
+				margin-bottom: 14px
+				clear: left
+			DIV U
+				font-size: 16px
+				font-weight: bold
+				text-decoration: none
+				color: $altColor
+				border-bottom: 2px solid $coulAssoc4
+				
+			//@media screen and (min-width: 48em)
+				DIV
+					float: left
+					min-width: 50%
+			DIV >P
+				display: table-cell
+				float: left
+				min-width: 42px
+			UL
+				display: table-cell
+				padding-left: 16px
+				padding-top: 4px
+			LI
+				font-size: 15px
+				padding-bottom: 5px
+				line-height: 17px
+				position: relative
+				left: 14px
+				color: $altColor
+			LI.x
+				color: $mainColor
+				font-style: italic
+				&:before
+					content: none
+			LI.or:before
+				+millCircle('')
+				background-color: $or
+			LI.argent:before
+				+millCircle('')
+				background-color: $argent
+			LI.bronze:before
+				+millCircle('')
+				background-color: $bronze
+			LI.prix:before
+				+millBullet('\24DF')
+				color: $coulAssoc1
+		
+		// Grille de sélection
+		.millesimes.selection
+			H3
+				color: $mainColor
+				margin-bottom: 2px
+			.h3b
+				color: $altColor
+			>DIV
+				border-bottom: 1px solid $coulAssoc4
+				padding-bottom: 7px
+				@media screen and (min-width: 48em)
+					min-width: 700px // 650px
+			.qte
+				@media screen and (min-width: 48em)
+					display: inline-block
+					width: 50%
+			.rec
+				display: inline-block
+				@media screen and (max-width: 47em)
+					margin-bottom: 10px
+					margin-top: 10px
+					font-size: 14px
+			LABEL
+				display: inline-block
+				width: 62px
+			INPUT
+				width: 80px
+				display: inline-block
+				padding: .4em
+				margin-bottom: 4px  
+			INPUT[disabled]
+				background-color: $altColor10pc
+			.rouge
+				color: $mainColor
+				
+		UL, LI
+			list-style-type: none
+		
+		BUTTON
+			background-color: $coulAssoc4
+			font-weight: normal
+			padding: .8em 1.6em
+		UL.vin-caracts
+			display: inline-block
+			>LI
+				border-bottom: 1px solid $coulAssoc4
+				padding: 4px 10px
+	
+	#flivraison
+		border: 1px dotted $mainColor
+		border-radius: 5px
+		padding: 20px
+		background-color: $coulAssoc425pc
+		UL
+			margin-left: 20px
+		.rouge
+			color: $mainColor
+			&:first-child
+				margin-bottom: 0
+	SELECT#listepays
+		width: auto 
+		padding: 0 10px
+		OPTION
+			padding: 10px	
+
+// Oeno Activités selection
+.oeno-selection
+	>DIV
+		display: block
+		@media screen and (min-width: 48em)
+			display: inline-block
+			width: 47%
+			&:nth-child(odd)
+				margin-right: 30px
+		padding-top: 20px
+		padding-bottom: 20px
+		margin-bottom: 10px
+		border-bottom: 1px solid $coulAssoc4
+		
+	H3
+		color: $mainColor
+		margin-bottom: 2px
+	.h3b
+		color: $altColor
+	input
+		width: 140px
+		display: inline-block
+	input[type='number'],
+	input[type='text'],
+	input[type='date']
+		padding: .4em
+		margin-bottom: 7px 
+	input[name='qte']
+		width: 97px
+	input[type='date']
+		width: auto
+	input[type='radio']
+		width: 15px
+		margin-top: 10px 
+	label
+		display: inline-block
+		margin-right: 30px
+A.resa BUTTON
+	background-color: $coulAssoc4
+	font-weight: normal
+	padding: .8em 1.6em
+
+// plan site
+.plan-site
+	LI 
+		list-style-type: none
+		font-size: 18px
+		A
+			color: black
+		LI
+			font-size: 16px
+			A
+				color: $altColor
+	.tag-catg
+		color: $coulAssoc4
+		text-transform: uppercase
+		font-size: 13px
+		margin-left: 10px
+		
+#msel
+	background-color: transparent
+	font-size: 14px
+
+// search
+.search-form .search-submit
+	background-color: $mainColor
+// gotoTop
+#gotoTop
+	width: 40px
+	height: 40px
+	display: none
+	background-color: $coulAssoc4
+	position: fixed
+	bottom: 20px
+	right: 20px
+	border-radius: 20px
+	opacity: .86
+	cursor: pointer
+	font-size: 1.3em
+	line-height: 1.35em
+	padding-left: .31em
+	color: white
+	.icon
+		transform: rotate(90deg)
+		top: 1px
+		left: 3px
+
+// WP MCM
+.gallery-caption
+	text-align: center
+	padding: 0
+	margin: 0
+	font-style: normal
+	font-size: 14px
+
+// page Equipe
+@media screen and (min-width: 48em)
+	.col-12
+		float: left
+		width: 100%
+		text-align: left
+		IMG
+			width: 38.5%
+	.wp-caption
+		width: 30%!important
+.col-12
+	margin-bottom: 20px
+	IMG
+		margin-bottom: 10px
+.wp-caption
+	font-size: 0.95rem
+	font-style: normal

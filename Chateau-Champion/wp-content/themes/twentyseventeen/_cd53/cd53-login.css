@@ -1,0 +1,28 @@
+#login h1 a {
+	background-image:url("logo-VB.svg") !important;
+	background-position-y: 16px;
+}
+#login {
+  padding: 0;
+  margin-top: 4%;
+  background-color: white;
+}
+.login h1 A {
+	background-size: 100%;
+	width: 300px;
+	height: 125px;
+	margin-bottom: 5px;
+}
+
+.wp-core-ui .button-primary {
+	background-color: #a90008;
+	border-color: #a90008;
+	box-shadow: 0 1px 0 #910007;
+    color: #fff;
+    text-decoration: none;
+    text-shadow: 0 -1px 1px #910007, 1px 0 1px #910007, 0 1px 1px #910007, -1px 0 1px #910007;
+}
+.wp-core-ui .button-primary:hover {
+	background-color: #910007;
+	border-color: #a90008;
+}
