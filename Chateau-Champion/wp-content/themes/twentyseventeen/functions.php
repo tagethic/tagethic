@@ -728,3 +728,5 @@ function get_the_content_with_formatting ($more_link_text = '(more...)', $stript
 	$content = str_replace(']]>', ']]&gt;', $content);
 	return $content;
 }
+// ôter balise meta generator
+remove_action('wp_head', 'wp_generator');
