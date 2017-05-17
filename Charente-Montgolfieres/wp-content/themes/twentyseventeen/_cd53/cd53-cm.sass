@@ -1,0 +1,1469 @@
+// cd53-cm.sass   -  DC avril 2017
+// info: single-line comments are not compiled..
+// info: brackets.json -> "outputStyle": "nested"
+// rappel media-queries
+// 480px : 30em / 768px : 48em / 1024px : 64em / 1140px : 71.25em
+
+// palette Charente Montgolfières
+$mainColor: #ef562d	// H1..n, couleur principale  
+$altColor: #8d7963 	// couleur alternative
+$altColorTr: #c6bcb1 // "" tramée
+$altColor10pc: #f3f1ef // altColor à 10%
+$lightTaint: #d1af93 // couleur associée Hazelnut
+$lightTaint50pc: #e8d7c9 // 50%
+$lightTaint33pc: #f0e5db // 33%
+$footerTaint: #5c7148 // Kale
+$footerTaint2: #859475 // Kale plus clair
+$footerTaint3: #c6ccbd // Kale clair - inputs
+$coulAssoc1: #d13076 // Fuschia
+$coulAssoc2: #88b24c // Vert lumière - proche logo
+$coulAssoc3: #7fbaf2 // Bleu pastel
+$coulAssoc4: #fea126 // Abricot - logo
+$coulAssoc425pc: #ffe7c9
+$coulAssoc5: #ffe000  // #fcf400  // Jaune - logo adapté
+$coulAssoc6: #0c4c8a // Lapis Blue
+$coulAssoc7: #5486a1 // Niagara
+$coulAssoc8: #f6d258 // Jaune primrose
+$coulAssoc8b: #f1e4a4 // Jaune primrose - pale
+$coulAssoc9: #92323f // Bordeaux
+$or: #d2ab67
+$argent: #a7a9ac
+$bronze: #a86127     
+
+// fonctions globales
+=css3($prop,$val)
+	#{$prop}: $val
+	-webkit-#{$prop}: $val
+	-ms-#{$prop}: $val
+=menuBullet($icon, $size)  
+	&:after
+		$type: "\2022"
+		@if $icon == bullet { $type: "\2022" } 
+		@if $icon == rarrow { $type: "\2023" }
+		@if $icon == tiret  { $type: "\2043" }
+		@if $size == '' { $size: 14px }
+		content: $type
+		color: $mainColor
+		position: absolute
+		top: -1px
+		right: -3px
+		font-size: $size
+// '\26AB'
+=millBullet($prop)
+	@if $prop == '' { $prop: '\26AB' }
+	content: $prop
+	position: absolute
+	padding-right: 7px
+	font-size: 16px
+	top: 0px
+	left: -18px
+=millCircle($prop)
+	content: ''
+	width: 11px
+	height: 11px
+	border-radius: 50%
+	position: absolute
+	top: 3px
+	left: -16px
+=bouton()
+	color: $coulAssoc6
+	background-color: $coulAssoc5
+	font-weight: bold
+	+css3(border-radius, 5px)
+	padding: .93em 1.3em
+	box-shadow: 0 1px 4px rgba(0,0,0,.34)!important
+	left: 50%
+	display: inline-block
+=bouton2()
+	color: $altColor10pc
+	background-color: $coulAssoc4
+	font-weight: bold
+	+css3(border-radius, 5px)
+	padding: .93em 1.3em
+	box-shadow: 0 1px 4px rgba(0,0,0,.34)!important
+	left: 50%
+	display: inline-block	
+	text-transform: uppercase
+	&:hover
+		color: $coulAssoc9
+=boutonMore()
+	box-shadow: 0 4px 0 $coulAssoc4
+	-webkit-box-shadow: 0 4px 0 $coulAssoc4
+	padding-left: 4px
+	padding-right: 4px
+	&:hover
+		color: $coulAssoc9
+		box-shadow: 0 2px 0 $coulAssoc4
+=lienStd()
+	box-shadow: inset 0 -1px 0 $mainColor
+	&:hover
+		box-shadow: inset 0 -1px 0 $altColor
+
+// fonts
+@import 'https://fonts.googleapis.com/css?family=Capriola|Quattrocento+Sans';  // titres
+//@import 'https://fonts.googleapis.com/css?family=Overlock';  // textes
+//@import 'https://fonts.googleapis.com/css?family=Lato';
+
+// -Styles globaux-
+*
+	font-family: 'Quattrocento Sans'
+H1, H2, H3, H4
+	font-family: Capriola
+
+H1, H2
+	color: $mainColor
+H3, H4
+	color: $mainColor
+
+.entry-meta,
+.nav-subtitle
+	color: $coulAssoc4
+	font-size: .8rem
+.nav-title
+	box-shadow: inset 0 -1px 0 $lightTaint33pc
+	color: $mainColor
+.post-navigation
+	A:hover
+		box-shadow: inset 0 0 0 $mainColor, 0 2px 0 $mainColor
+		.nav-title
+			color: $mainColor
+			box-shadow: inset 0 0 0 $mainColor, 0 2px 0 $mainColor
+.entry-footer
+	.cat-links
+		.icon
+			color: $coulAssoc4
+			width: 1.5em
+			height: 1.5em
+			top: 0
+		A
+			color: $mainColor
+			font-size: .8rem
+			box-shadow: inset 0 -1px 0 $lightTaint33pc
+			&:hover
+				color: $mainColor
+				box-shadow: inset 0 0 0 $mainColor, 0 2px 0 $mainColor
+
+.site-main
+	@media screen and (min-width: 48em)
+		min-height: 500px
+	
+.page .panel-content .entry-title
+	color: $mainColor
+	font-size: 20px
+
+// Menu principal
+.navigation-top
+	background-color: rgba(243, 241, 239, .8) // $lightTaint33pc
+	border-bottom: 0 // 1px solid $mainColor
+	@media screen and (min-width: 48em)
+		.wrap
+			text-align: center
+			max-width: 960px; /* 1000px; - Voir styles.css */
+			.main-navigation
+				display: inline-block
+	A
+		color: $mainColor
+	//@media screen and (min-width: 48em)
+		font-size: 15px
+.main-navigation
+	box-shadow: none
+			
+.main-navigation a:hover
+	color: $altColor
+.main-navigation li li:hover > a, 
+.main-navigation li li a:hover
+	color: $mainColor
+	background-color: $altColor10pc
+.main-navigation LI LI
+	border-bottom: 1px dotted $coulAssoc4 + 30%
+	> A:focus
+		color: $coulAssoc4
+	&.current_page_item a:focus, 
+	&.current-menu-item a:focus,
+	&:focus a,
+	&.focus a
+		color: $coulAssoc4
+.navigation-top .current-menu-item > a, 
+.navigation-top .current_page_item > a,	
+.navigation-top .current-menu-item > a:hover, 
+.navigation-top .current_page_item > a:hover
+	color: $mainColor !important
+	background-color: $altColor10pc - 20%
+.logo-in-nav
+	position: fixed
+	top: -100px
+	+css3(transition,all .5s ease-out)
+	left: 40%
+	margin-left: -432px
+	width: 135px
+	z-index: 9
+	&.fixed	
+		top: 7px
+		+css3(transition,all .5s ease-out)
+.admin-bar .logo-in-nav.fixed
+	top: 12px
+	@media screen and (min-width: 48em)
+		top: 36px
+// flèche d'invite à scroller
+.action-navigation
+	display: none
+.menu-scroll-down  
+	display: none !important
+.social-navigation
+	display: none
+	margin-bottom: 0
+
+// Numeros de tel apparaissant au survol
+#tels
+	display: none
+	position: fixed
+	right: 103px
+	z-index: 20
+	background-color: $coulAssoc4
+	border-radius: 7px
+	font-size: 1em
+	color: white
+	top: 70px
+	padding: 5px
+	display: inline-block
+	width: 270px
+	@media screen and (min-width: 48em)
+		&:before
+			content: '\25B2'
+			position: absolute
+			color: $coulAssoc4
+			left: 48%
+			top: -14px
+			width: 14px
+			height: 14px
+	> DIV
+		padding: 14px
+		border-radius: 7px	
+		border: 1px dashed white
+	.icon
+		float: left
+		margin-top: 5px
+		margin-right: 10px
+		margin-bottom: 30px
+		width: 2em!important
+		height: 2em!important  
+.admin-bar
+	#tels
+		top: 100px
+
+// Menu version Mobile et Tablet
+@media screen and (max-width: 47.9em)
+	.navigation-top
+		position: fixed 
+		top: 0
+		width: 100%
+		z-index: 10
+		A
+			font-weight: normal
+	.admin-bar .navigation-top
+		position: absolute
+		top: 0
+	.menu-toggle
+		margin: 1px 0 2px 0
+		padding-right: 20px
+		width: 100%
+		text-align: right
+		.icon
+			width: 1.6em
+			height: 1.6em
+			color: $altColor
+		&:focus
+			outline: none
+			background-color: transparent
+	.logo-in-nav
+		top: 5px
+		left: 50%
+		margin-left: -50px
+		z-index: 12
+		width: 100px
+	.admin-bar .logo-in-nav
+		position: absolute
+	.menu-menu-principal-container
+		width: 100%
+	.js .main-navigation
+		box-shadow: none
+		UL
+			background-color: #d7d0c9
+			// position: relative
+		>DIV >UL
+			+css3(transition,all .5s ease-out)
+		LI
+			border-bottom: 1px solid $coulAssoc4
+			A
+				padding-left: 5px
+			LI
+				&:last-child
+					border-bottom: 0
+		.action-navigation
+			display: none
+			A
+				color: $altColor
+				&:before
+					content: '>'
+					color: $coulAssoc4
+					font-size: 20px
+					line-height: 20px
+					padding-right: 2px
+		&.toggled-on
+			box-shadow: 0 10px 20px rgba(0,0,0,.46)
+			>DIV >UL
+				+css3(transition,all .5s ease-out)
+			.action-navigation
+				display: block
+				UL.menu-action
+					display: block
+					LI:last-child
+						border-bottom: 0
+						padding-bottom: 10px
+			.social-navigation
+				display: block !important
+				margin-top: 0
+				margin-bottom: 0
+				UL
+					display: block
+					A
+						background-color: transparent
+						&:hover
+							background-color: transparent
+						.icon
+							display: inline-block
+							color: white
+							width: 34px
+							height: 24px
+							top: 3px
+				.social-links-menu
+					background-color: $mainColor
+					text-align: center
+					LI
+						border-bottom: 0
+	.dropdown-toggle
+		color: $altColor
+		&:focus
+			outline: 0
+		.icon
+			width: 1.4em
+			height: 1.3em 
+
+	
+// Contact Form 7
+.wpcf7-form
+	position: relative
+	.wpcf7-response-output
+		position: absolute
+		left: 0px
+		bottom: 60px
+		margin-top: -58px
+		background-color: $coulAssoc4
+		border: 0 !important
+		&.wpcf7-mail-sent-ok
+			background-color: $coulAssoc2
+	TEXTAREA
+		font-size: 14px
+	input[type="submit"]
+		background-color: $mainColor
+		opacity: 1
+		&:hover
+			background-color: $mainColor - 20%
+		&.btn-disabled
+			opacity: .5
+	input[name='emailconf']
+		&.incomplet
+			border: 1px solid red !important 
+	
+// Fiche de renseignements
+.formrens
+	.wpcf7-response-output
+		@media screen and (min-width: 48em)
+			position: relative
+			left: 200px
+			width: 80%
+			top: 0  
+		&.wpcf7-mail-sent-ok
+			display: none
+	// case à cocher CGV
+	LABEL.cgv
+		INPUT[type='checkbox']
+			+css3(transform, scale(2))
+		.wpcf7-list-item-label
+			display: none
+	// date format
+	.dform
+		font-weight: normal
+		color: $coulAssoc4
+	
+   
+// Menu Social
+@media screen and (min-width: 48em)
+	.social-navigation
+		clear: none
+		float: none
+		margin-bottom: 0
+		width: auto
+		z-index: 100
+		position: fixed
+		top: 12px
+		right: 20px
+		display: none
+		&.socon
+			display: block
+		A
+			background-color: white
+			box-shadow: 0px 0px 3px #888888;
+			.icon
+				color: $mainColor
+				width: 22px
+			&:focus, &:active, &:visited
+				background-color: white
+			&:hover
+				background-color: $mainColor
+				.icon
+					color: white
+		UL.sub-menu
+			display: none
+			top: 50px
+			left: -70px
+			position: absolute
+			width: 200px
+			padding: 10px
+			background-color: $lightTaint33pc
+			box-shadow: 0 1px 2px rgba(0,0,0,.46)
+			border-radius: 5px
+			A
+				box-shadow: none
+				background: none
+				border-radius: 0
+				text-align: left
+				width: 200px
+				SPAN.screen-reader-text
+					height: 20px
+					width: 180px
+					clip: auto
+					color: $mainColor
+	.admin-bar .social-navigation
+		top: 44px
+	.icon.icon-flag-en
+		height: 16px
+		top: 12px
+		width: 22px
+		vertical-align: top
+
+	
+// Le grand visuel d'accueil contient une ombre en dégradé
+//.custom-header-media
+	&:before	
+		background: initial
+#post-11
+	display: none
+.site-branding 
+	.wrap
+		text-align: center
+	.site-branding-text
+		text-shadow: 0px 0px 8px #000000
+		padding-top: 20px
+	.site-description
+		font-size: 22px 
+	.custom-logo-link
+		display: none
+	.logo-mono
+		position: relative
+		opacity: .4
+
+.page.page-one-column .entry-header, 
+.twentyseventeen-front-page.page-one-column .entry-header
+	margin-bottom: 2em 
+
+// Content-Views
+.pt-cv-wrapper .btn-success,
+.pt-cv-wrapper .btn-success.active, 
+.pt-cv-wrapper .btn-success:active, 
+.pt-cv-wrapper .btn-success:hover, 
+.pt-cv-wrapper .btn-success:focus, 
+.pt-cv-wrapper .btn-success.focus,
+.pt-cv-wrapper .open>.dropdown-toggle.btn-success,
+.pt-cv-wrapper .open>.dropdown-toggle.btn-success:focus,
+.pt-cv-wrapper .open>.dropdown-toggle.btn-success:hover,
+.pt-cv-wrapper .open>.dropdown-toggle.btn-success:active,
+.pt-cv-wrapper .open>.dropdown-toggle.btn-success.active,
+.postl,
+.postl:active,
+.postl:focus
+	background-color: transparent
+	border: 0
+	color: $altColor
+	border-radius: 0
+	padding: 3px 6px
+	.icon
+		top: -0.3em
+		left: -0.2em
+
+
+.panel-content
+	.wrap,
+	#primary
+		max-width: 1140px!important
+		padding-left: 0px
+		padding-right: 0px
+.entry-content 
+	a 
+		&:hover
+			text-decoration: none
+			box-shadow: none
+		img
+			-webkit-box-shadow: none
+			box-shadow: none
+			width: 100%	
+	UL
+		list-style: none
+		LI 
+			position: relative
+			left: 20px
+			&:before
+				content: '\2022'
+				position: absolute
+				font-size: 36px
+				color: $mainColor
+				font-weight: bold
+				margin-right: 5px
+				top: -16px
+				left: -16px
+			LI
+				&:before
+					color: $coulAssoc1
+.entry-footer .edit-link a.post-edit-link
+	color: black
+	background-color: transparent
+	&:hover
+		background-color: transparent
+		text-decoration: underline
+
+// panel4 - Nous contacter - Accueil
+#panel4
+	//background-color: #c3d8a5  //$footerTaint2  #5c7148
+	background: #afd3cc  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to bottom, #afd3cc, #5c7148)  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to bottom, #afd3cc, #5c7148) /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+	//H2.entry-title
+		color: $lightTaint33pc
+	INPUT[type=text],
+	INPUT[type=tel],
+	INPUT[type=email],
+	TEXTAREA,
+	SELECT
+		background-color: #f9f6f5 // $footerTaint3
+		border: 1px solid $coulAssoc8b
+	INPUT[type=submit]
+		+bouton2()
+	
+// pied de page	
+.site-footer
+	background-color: $footerTaint
+	border-top: 1px dotted $altColor
+	margin-top: 0
+	H2
+		color: $mainColor
+		font-size: 14px
+	
+// pied de page - contenu
+.site-info
+	text-align: center 
+	float: none
+	width: auto
+	color: $lightTaint33pc
+	A 
+		color: $lightTaint33pc
+		box-shadow: inset 0 -1px 0 rgba(255, 255, 255, .2)
+		&:hover
+			color: $lightTaint33pc
+			box-shadow: inset 0 0 0 rgba(0, 0, 0, 0), 0 1px 0 rgba(254, 161, 38, .6)
+  
+// nous-trouver
+.nous-trouver
+	@media screen and (min-width: 48em)
+		float: left
+		width: 25%
+		display: inline-block
+	IMG
+		width: 80%
+		opacity: .5
+		margin-bottom: 15px
+.nous-contacter
+	@media screen and (min-width: 48em)
+		float: left
+		width: 48%  
+		display: inline-block
+		margin-right: 40px
+.nous-sur-fb
+	@media screen and (min-width: 48em)
+		float: left
+		width: 23%
+		display: inline-block
+.formp,
+.formrens
+	@media screen and (min-width: 48em), print
+		display: table
+		.demil,
+		.demir
+			display: inline-block
+			width: 47%
+			vertical-align: top
+		.demil
+			margin-right: 5%
+		SELECT
+			width: 100%
+			padding: 0 10px
+			OPTION
+				padding: 10px
+	#select-pays-container
+		position: absolute
+		z-index: 10
+		width: 200px
+		height: 200px
+		display: inline-block
+	#pays
+		position: relative
+	#selectPays 
+		height: 100%
+		
+
+.print-legal
+	display: none
+@media print
+	.print-legal
+		display: block
+		text-align: center
+		border-top: 1px solid darkgrey
+		margin-top: 20px
+		padding-top: 20px
+	.logo-in-nav
+		position: fixed
+		top: -20px
+		margin-left: 0
+		right: 50px
+		left: auto
+	.content-area
+		margin-top: 10px !important
+	P, LABEL, DIV
+		font-size: 10px
+	H2
+		font-size: 18px 
+		color: black 
+	LABEL
+		font-weight: normal
+	INPUT,
+	TEXTAREA,
+	SELECT
+		border: 1px dotted darkgrey
+		padding: 4px
+	INPUT[type=submit]
+		display: none
+	H2, P
+		color: black 
+	P.cgv
+		margin-top: 10px
+		margin-left: 10px
+	.site-footer
+		display: none
+
+// Fiche de renseignements
+// bouton Imprimer
+.btn-print
+	display: inline-block
+	margin: 0 auto
+	margin-bottom: 40px
+	cursor: pointer
+	+bouton2()
+	&.btn-disabled
+		cursor: default
+		opacity: .5
+		&:hover
+			color: $altColor10pc
+	@media print 
+		display: none !important
+
+
+
+BODY.twentyseventeen-front-page
+	@media screen and (min-width: 48em)
+		H1
+			color: $coulAssoc9
+			top: 15px
+			z-index: 20
+		DIV.motto
+			color: $coulAssoc9
+			top: 50px
+			z-index: 21
+			font-size: 1.25em
+		H1, DIV.motto
+			position: fixed
+			left: -250px
+			margin-left: 50%
+			width: 500px
+			display: inline-block
+			text-align: center
+		&.admin-bar
+			H1
+				top: 45px
+			DIV.motto
+				top: 80px
+		.panel-content 
+			.wrap
+				padding-top: 5.8em
+		&.admin-bar
+			.panel-content
+				.wrap
+					padding-top: 4em
+		
+		// Hauteur du bandeau top - Accueil
+		.site-navigation-fixed.navigation-top
+			height: 125px
+			.wrap
+				.main-navigation
+					margin-top: 60px
+					width: 840px
+					margin-left: -50% 
+					left: 300px
+					position: relative
+		.logo-in-nav
+			width: 200px 
+		.main-navigation
+			A
+				padding: 1em .8em
+		.navigation-top
+			background-color: rgba(157, 211, 249, 0.82)
+			box-shadow: 0 1px 4px rgba(0,0,0,.14)
+		ARTICLE#post-7
+			background: url(paysage.jpg) no-repeat #c3d8a5
+			background-size: 100% auto
+			background-attachment: fixed
+			background-position: center
+		.site-content-contain
+			background: url(vignes-panorama.jpg) no-repeat
+			background-size: 100% auto
+			background-attachment: fixed
+			background-position: center bottom
+		.site-footer
+			background: none
+			border: 0
+			margin-top: 200px
+			.site-info
+				background-color: rgba(92, 113, 72, .81)
+				padding: 0.7em
+		#panel4
+			background-size: 100% 70%
+			background-repeat: repeat-x
+
+	//#primary
+		// 1024px
+		//@media screen and (max-width: 64em) 
+			padding-left: 20px
+	article
+		@media screen and (max-width: 64em)
+			padding-left: 20px
+			padding-right: 20px
+	article[id^="post-"]
+		@media screen and (max-width: 64em)
+			padding-left: 10px
+			padding-right: 0px
+		H2.entry-title
+			display: none
+.twentyseventeen-front-page
+	article:not(.has-post-thumbnail):not(:first-child) 
+		border-top: 0
+	
+	
+	
+	
+// Styles de page (hors .twentyseventeen-front-page)
+BODY:not(.twentyseventeen-front-page)
+	// Hauteur du bandeau top - Page
+	@media screen and (min-width: 48em) and (max-width: 64em) 
+		.navigation-top
+			.wrap
+				width: 1000px
+	.main-navigation
+		A
+			padding: 1em
+	.site-navigation-fixed.navigation-top
+		height: 100px
+		.wrap
+			.main-navigation
+				margin-top: 40px
+				margin-left: 50px
+				width: 100%
+				display: block
+	.site-content
+		.wrap,
+		#primary
+			// 768px
+			@media screen and (min-width: 48em) 
+				max-width: 1140px!important
+				padding-left: 0px
+				padding-right: 0px
+			// 1024px
+			@media screen and (max-width: 64em) 
+				padding-left: 10px
+				padding-right: 10px
+	.site-content-contain
+		background-color: $altColor10pc
+		min-height: 400px
+		.content-area
+			margin-top: 70px
+		H1.entry-title
+			color: $mainColor
+			font-size: 36px
+			font-weight: normal
+			//margin-top: 70px
+			letter-spacing: 0.02em
+			text-transform: none
+		H1.page-title
+			color: $altColor
+			margin-top: 40px
+		H2.entry-title A
+			color: $mainColor
+			box-shadow: none
+			&:hover
+				box-shadow: inset 0 -1px 0 $altColor
+	.entry-content
+		P, 
+		DIV
+			A:not(.fbx-link)
+				+lienStd()
+				&.bouton
+					+bouton2()
+			A.fbx-link
+				box-shadow: none
+		H4
+			A
+				box-shadow: none
+				&:hover
+					box-shadow: inset 0 -1px 0 $altColor	
+		IMG 
+			border: 4px solid white
+			box-shadow: 0 1px 4px rgba(0,0,0,.1)
+			&.noborder
+				border: 0
+				box-shadow: none
+				@media screen and (max-width: 47em)
+					float: left !important
+					margin-right: 10px
+		// Boutons orange
+		BUTTON
+			background-color: $coulAssoc4
+			font-weight: normal
+			padding: .8em 1.6em
+	
+
+// plan site
+.plan-site
+	@media screen and (min-width: 48em)
+		.menu-menu-superieur-container
+			float: left
+			width: 50%
+		.plan-articles
+			display: inline-block
+	LI 
+		list-style-type: none
+		font-size: 18px
+	.plan-menu
+		LI 
+			font-size: 1.375rem
+			font-weight: bold
+			A
+				color: $mainColor
+				padding-top: 10px
+				cursor: pointer
+				.icon
+					display: none
+			A[href='javascript:;']
+				cursor: default
+		UL.sub-menu
+			margin-top: 0.65em
+			margin-bottom: 0.65em
+			LI
+				padding-top: 2px
+				font-size: 16px
+				font-weight: normal
+				A
+					color: black
+					+lienStd()
+					cursor: pointer
+	.plan-articles
+		H3
+			color: $mainColor
+		LI
+			font-size: 16px
+			padding-top: 2px
+			A
+				+lienStd()
+	.tag-catg
+		color: $coulAssoc7
+		text-transform: uppercase
+		font-size: 13px
+		margin-left: 10px
+		
+
+// search
+.search-form .search-submit
+	background-color: $mainColor
+// gotoTop
+#gotoTop
+	width: 40px
+	height: 40px
+	display: none
+	background-color: $mainColor
+	position: fixed
+	bottom: 20px
+	right: 20px
+	border-radius: 20px
+	opacity: .86
+	cursor: pointer
+	font-size: 1.3em
+	line-height: 1.35em
+	padding-left: .31em
+	color: white
+	.icon
+		transform: rotate(90deg)
+		top: 5px
+		left: 3px
+
+// WP MCM
+//.gallery-caption
+	text-align: center
+	padding: 0
+	margin: 0
+	font-style: normal
+	font-size: 14px
+
+// page Equipe
+//@media screen and (min-width: 48em)
+	.col-12
+		float: left
+		width: 100%
+		text-align: left
+		IMG
+			width: 38.5%
+	.wp-caption
+		width: 30%!important
+//.col-12
+	margin-bottom: 20px
+	IMG
+		margin-bottom: 10px
+.wp-caption
+	font-size: 0.95rem
+	font-style: normal
+	text-align: center
+
+//
+// Grid-accueil
+//
+.grid-accueil-box
+	display: table
+	width: 100%
+	.grid-accueil
+		H3
+			line-height: 1.1em
+		> DIV
+			margin-right: 20px
+			margin-bottom: 20px
+			border: 1px dotted $coulAssoc3
+			box-shadow: 0 1px 2px rgba(0,0,0,.46)
+			min-height: 420px
+		&.bloc-dgac 
+			>DIV
+				background-color: #ddf1f5
+				.dgac
+					color: white
+					padding: 20px
+					text-align: center
+					background-color: $coulAssoc6
+					IMG
+						margin-top: 0
+						margin-bottom: 5px
+				.paiements
+					color: $coulAssoc7
+					padding-top: 25px
+					text-align: center
+					border-top: 1px solid $coulAssoc9
+					STRONG, B
+						text-transform: uppercase
+					IMG
+						width: 86%
+			
+		&.bloc-meteo >DIV
+			padding: 20px
+			background-color: $coulAssoc7
+			color: white
+	
+		@media screen and (min-width: 48em)
+			> DIV
+				display: inline-block
+				float: left
+				width: 23%
+				max-width: 300px
+			//&:last-child > DIV
+				margin-right: 0
+			> DIV
+				height: 400px // 420px  // plus 20px de margin-bottom
+				overflow: hidden
+			//&.bloc-dgac
+				IMG
+					width: 100%	
+			&.bloc-formule,
+			&.bloc-service
+				> DIV
+					width: 48%
+					max-width: 600px
+		&.bloc-formule,
+		&.bloc-service
+			H3
+				margin-top: 8em!important
+				@media screen and (max-width: 47.8em)
+					margin-top: 5em!important
+					padding-left: 20px
+					padding-right: 20px
+				margin-bottom: .4em
+				color: white
+		&.bloc-qui-sommes-nous
+			H3
+				margin-bottom: 5.6em
+				margin-top: 2.8em!important
+				@media screen and (max-width: 47.8em)
+					margin-top: 4em!important
+					margin-bottom: 2.6em
+					padding-left: 20px
+					padding-right: 20px
+					
+// grid-accueil - Meteo				
+.bloc-meteo
+	.mto-fcst
+		position: relative
+		width: 48%
+		display: inline-block
+		.jour
+			clear: both
+			display: block
+			text-transform: uppercase
+			margin-left: 8px
+		.tmin,
+		.tmax
+			position: absolute
+			font-family: Capriola
+			top: 0px
+			left: 50px
+			font-size: 18px
+		.tmin
+			top: 22px
+			color: $coulAssoc3
+			font-size: 14px
+		&:first-child
+			width: 100%
+			margin-top: 1.5em
+			margin-bottom: 2em
+			.tmin
+				display: none
+			.tmax
+				font-size: 50px
+			.tmin,
+			.tmax
+				top: 10px
+				left: 130px
+			.jour
+				text-align: center
+				margin-left: 0px
+	.lieu
+		margin-top: 2em
+		font-size: .95em
+// grid-accueil - Nos montgolfieres...
+.Affiche,
+.bloc-decouverte,
+.bloc-formule,
+.bloc-service,
+.bloc-qui-sommes-nous
+	> DIV
+		//cursor: pointer
+		position: relative
+		text-align: center
+		background-position: 50% 50% !important
+		@media screen and (min-width: 48em)
+			background-size: auto 100% !important
+			+css3(transition,all .5s linear)
+			&:hover
+				background-size: auto 105% !important
+				+css3(transition,all .5s linear)
+		color: white
+		height: 420px
+		H3
+			color: white
+			font-size: 1.7em
+			text-shadow: 0px 0px 8px #000000
+
+.bloc-formule,
+.bloc-service,
+.bloc-qui-sommes-nous
+	> DIV
+		A
+			+bouton2()
+.bloc-decouverte
+	> DIV
+		H3
+			padding-top: 7.5em
+			margin-bottom: 0
+			@media screen and (max-width: 47.8em)
+				padding-left: 20px
+				padding-right: 20px
+		A
+			+boutonMore()
+			color: white
+			font-weight: bold
+
+.Affiche
+	> DIV
+		position: relative
+		.filtre
+			background-color: rgba(119, 75, 63, 0.7)
+			position: absolute
+			bottom: 0
+			padding: 20px
+			border-top: 1px solid $coulAssoc9
+			DIV
+				position: absolute
+				left: 0
+				width: 100%
+				top: -0.8em
+				SPAN
+					background-color: $coulAssoc2
+					text-transform: uppercase
+					font-size: .9em
+					border-radius: .4em
+					padding: 3px 9px
+					color: white
+					font-weight: bold
+			H3
+				padding-top: .4em
+		A
+			+boutonMore()
+			color: white
+			font-weight: bold
+	
+// grid-accueil - Nos terrains
+.grid-accueil.defaut,
+.bloc-terrains
+	text-align: center
+	//cursor: pointer
+	>DIV
+		background-color: $altColor10pc
+	IMG
+		max-height: 200px
+		border-bottom: 1px solid $coulAssoc9
+	H3
+		color: $coulAssoc9
+	.gtext
+		margin: 20px 40px 20px 40px
+	A
+		+boutonMore()
+//.bloc-paiements
+	text-align: center
+	padding: 40px
+	background-color: #ddf1f5
+	border-top: 1px solid $coulAssoc9
+	STRONG, B
+		text-transform: uppercase
+		font-weight: normal
+// grid-accueil - affichage par défaut
+.grid-accueil.defaut
+	DIV.thumb
+		background-position: 50% 50% !important
+		@media screen and (min-width: 48em)
+			background-size: auto 100% !important
+		height: 175px
+		border-bottom: 1px solid $coulAssoc9
+	DIV.gtext
+		position: relative
+		padding-top: 8px
+		H3
+			padding: 0
+		DIV
+			position: absolute
+			top: -35px
+			width: 100%
+			SPAN
+				background-color: $coulAssoc2
+				text-transform: uppercase
+				font-size: .9em
+				border-radius: .4em
+				padding: 3px 9px
+				color: white
+				font-weight: bold
+		
+
+// Caracts montgolfières
+.caracts
+	@media screen and (min-width: 48em)
+		//width: 25%
+		display: inline-block
+	DIV
+		border-top: 1px dotted $coulAssoc4
+		float: left
+		width: 45%
+		&:nth-child(odd)
+			margin-right: 8%
+		//@media screen and (min-width: 48em)
+			width: 100%
+			float: none
+		H3
+			text-transform: uppercase
+			color: $coulAssoc4
+			font-size: 14px
+			font-weight: normal
+			padding-top: 8px
+		P
+			color: $mainColor
+			font-size: 24px
+			font-weight: normal
+
+H2.img50pc
+	padding-top 1.5em
+	line-height: 2.3em
+	@media screen and (min-width: 48em)
+		padding-top: 0
+		IMG
+			width: 50%
+			border: 4px solid white
+			box-shadow: 0 1px 4px rgba(0,0,0,.1)
+// numéros de téléphone
+#telsnum
+	display: none
+	@media screen and (min-width: 48em)
+		position: fixed
+		top: 120px
+		&.montre
+			display: inline-block
+// légende terrains de décollage
+.terrain
+	display: inline-block
+	margin-right: 20px
+	line-height: 1.8em
+	margin-bottom: 20px
+	IMG 
+		float: left
+		width: 26px
+		margin-right: 5px
+
+// Timeline
+DIV.timeline
+	padding-top: 40px
+	padding-bottom: 40px
+	>DIV
+		border-left: 2px solid $mainColor + 30%
+		position: relative
+		padding-left: 20px
+		padding-bottom: 30px
+		@media screen and (min-width: 48em)
+			margin-left: 25%
+		H3
+			color: $coulAssoc9
+			font-size: 20px
+			@media screen and (min-width: 48em)
+				padding-right: 24px
+				position: absolute
+				left: -25%
+				width: 25%
+				text-align: right
+				margin-top: 20px
+		P
+			padding: 20px
+			margin: 0
+			border: 1px dotted $coulAssoc4
+			&:before
+				content: '\2022'
+				font-size: 4.2em
+				position: absolute
+				color: $coulAssoc9 	
+				left: -0.17em
+				top: -20px
+			@media screen and (min-width: 48em)
+				width: 50%
+	
+	
+// -Modal window-  #myModal
+BODY.modalOn
+	overflow: hidden
+.modal
+	.entry-content
+		padding: 0em 1.8em 0em 1.8em
+		overflow-y: auto
+	.content-area
+		width: 100%
+	position: fixed
+	top: 10px
+	right: 0
+	bottom: 0
+	left: 0
+	z-index: 1050
+	max-height: 630px
+	display: none
+	overflow: hidden
+	-webkit-overflow-scrolling: touch
+	outline: 0
+	&.fade
+		opacity: 0
+		-webkit-transition: opacity .15s linear
+		-o-transition: opacity .15s linear
+		transition: opacity .15s linear
+	&.fade.in 
+		opacity: 1
+		display: block
+	button.fermer
+		margin-left: -50px
+		position: relative
+		bottom: 1.2em
+		left: 50%
+		padding: 6px 12px
+		border-radius: 0
+		background-color: $coulAssoc4
+		font-size: 14px
+	
+// la hauteur de MW est gérée en JS
+.modal-body
+	//overflow: visible
+	margin-bottom: 10px
+	max-height: 406px
+	
+.modal-backdrop
+	position: fixed
+	top: 0
+	right: 0
+	bottom: 0
+	left: 0
+	z-index: 1040
+	background-color: #000
+	&.fade
+		opacity: 0
+		display: none
+	&.fade.in 
+		display: block
+		filter: alpha(opacity=80)
+		opacity: .8
+		-webkit-transition: opacity .15s linear
+		-o-transition: opacity .15s linear
+		transition: opacity .15s linear
+
+.modal-dialog
+	position: relative
+	top: 190px
+	margin: 0 auto
+	@media (max-width: 779px)
+		width: 96%
+		margin-right: 14px
+	@media (min-width: 780px)
+		width: 1000px
+.modal-header
+	height: 40px
+	.close
+		background-color: transparent
+		color: $mainColor
+		font-weight: bold
+		font-size: 24px
+		position: absolute
+		right: 0
+		padding: 10px 20px
+	
+@media (min-width: 768px)
+	.modal-content
+		-webkit-box-shadow: 0 5px 15px rgba(0,0,0,.5)
+		box-shadow: 0 5px 15px rgba(0,0,0,.5)
+.modal-content
+	max-height: 585px
+	position: relative
+	background-color: #fff
+	-webkit-background-clip: padding-box
+	background-clip: padding-box
+	border: 1px solid #999
+	border: 1px solid rgba(0,0,0,.2)
+	border-radius: 6px
+	outline: 0
+	-webkit-box-shadow: 0 3px 9px rgba(0,0,0,.5)
+	box-shadow: 0 3px 9px rgba(0,0,0,.5)
+.modal.in .modal-dialog
+	-webkit-transform: translate(0,0)
+	-ms-transform: translate(0,0)
+	-o-transform: translate(0,0)
+	transform: translate(0,0)
+
+.modal.fade .modal-dialog
+	-webkit-transition: -webkit-transform .3s ease-out
+	-o-transition: -o-transform .3s ease-out
+	transition: transform .3s ease-out
+	-webkit-transform: translate(0,-25%)
+	-ms-transform: translate(0,-25%)
+	-o-transform: translate(0,-25%)
+	transform: translate(0,-25%)	
+
+
+// Tableau des tarifs
+.tarifs
+	display: block
+	text-align: center
+	TABLE
+		width: initial
+		display: inline-block
+	TR
+		border-bottom: 2px solid $coulAssoc4
+	TD
+		vertical-align: top
+		padding: 5px
+		@media screen and (min-width: 48em)
+			padding: 10px 25px 10px 25px
+		text-align: left
+		font-weight: bold
+		&:last-child
+			color: $mainColor
+	
+// Alignement numeros de tel
+span.tel
+	width: 4em // 51px
+	display: inline-block
+
+// page à propos - Qui sommes-nous
+.apropos
+	cursor: pointer
+	@media screen and (min-width: 48em)
+		text-align: center
+		>DIV
+			display: inline-block
+			IMG
+				border: 5px solid white
+			H3
+				padding-top: .6em
+				margin-right: 1.5em
+
+// Galerie - Partenaires
+.partenaire 
+	display: table
+	margin-bottom: 40px
+	&:nth-child(odd)
+		margin-right: 40px
+		clear: left
+	@media screen and (min-width: 48em)
+		float: left
+		width: 45%
+	IMG
+		float: left
+		margin-right: 20px
+		border: 4px solid white
+		box-shadow: 0 1px 4px rgba(0,0,0,.1)
+	h4
+		@media screen and (min-width: 48em)
+			display: inline-block
+		font-weight: normal
+		padding-top: 5px
+		margin-bottom: 0
+	P
+		text-align: left
+		margin-bottom: .8em
