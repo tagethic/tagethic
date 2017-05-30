@@ -1,6 +1,6 @@
 <?php 
 /*
- * DC  28 avril 2017 - Création d'un post type custom pour grid-accueil
+ * DC  26 mai 2017 - Création des post type custom 
  *
  */
 add_action( 'init', 'create_post_type' );
@@ -29,7 +29,20 @@ function create_post_type() {
   );
   register_taxonomy( 'partenaire', 'partenaires', array( 'hierarchical' => true, 'label' => 'Type', 'query_var' => true, 'rewrite' => false ) );
  
+   register_post_type( 'terrains',
+    array(
+      'labels' => array(
+        'name' => __( 'Terrains' ),
+        'singular_name' => __( 'Terrain' )
+      ),
+      'public' => true,
+	  'supports' => array( 'title', 'editor', 'thumbnail', 'revisions', 'excerpt')   // , 'excerpt' )
+    )
+  );
+  register_taxonomy( 'homologation', 'terrains', array( 'hierarchical' => true, 'label' => 'Détails', 'query_var' => true, 'rewrite' => false ) );
+ 
 }
+
 
 /**
  * Twenty Seventeen functions and definitions
@@ -681,12 +694,13 @@ function insert_fb_in_head() {
 	if(!has_post_thumbnail( $post->ID )) { //the post does not have featured image, use a default image
 		$default_image=wp_get_attachment_url( 161 );
 		if(!$default_image) {
-			$default_image="http://www.charente-montgolfieres.fr/wp-content/uploads/2017/04/visuel-formules.jpg";
+			// $default_image="http://www.charente-montgolfieres.fr/wp-content/uploads/2017/04/visuel-formules.jpg";
+			$default_image="/wp-content/uploads/2017/04/visuel-formules.jpg";
 		} //replace this with a default image on your server or an image in your media library
 		echo '<meta property="og:image" content="' . $default_image . '"/>';
 	}
 	else{
-		$thumbnail_src = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'medium' );
+		$thumbnail_src = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'large' );
 		echo '<meta property="og:image" content="' . esc_attr( $thumbnail_src[0] ) . '"/>';
 	}
 	echo "
@@ -722,6 +736,7 @@ remove_action('wp_head', 'wp_generator');
 //
 //Création de la méthode qui vient modifier notre mail avant l'envoi.
 //@param : $contact_form -> objet propre à CF7 qui nous retourne les informations du mail et de la configuration du formulaire.
+/*
 add_action('wpcf7_before_send_mail', 'function_to_hook_before_mail');
 function function_to_hook_before_mail($contact_form) {
 	//
@@ -731,7 +746,7 @@ function function_to_hook_before_mail($contact_form) {
         // return true; // true : DO NOT SEND E-MAIL
 	 }
 }
-
+*/
 
 
 

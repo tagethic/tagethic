@@ -3,8 +3,43 @@
 // info: brackets.json -> "outputStyle": "nested"
 // rappel media-queries
 // 480px : 30em / 768px : 48em / 1024px : 64em / 1140px : 71.25em
+// ----------------------------------
+// V1 : 16 mai 2017
+// V2 : 30 mai
+// ----------------------------------
+// 1. Palette générale
+// 2. Fonctions globales
+// 3. Styles globaux 
+// 4. Menu principal
+// 5. Numeros de tel apparaissant au survol
+// 6. Menu version Mobile et Tablet
+// 7. Contact Form 7
+// 8. Fiche de renseignements
+// 9. Menu Social
+// 10. Site branding
+// 11. Panel content
+// 12. pied de page
+// 13. nous-trouver
+// 14. Media print
+// 15. twentyseventeen-front-page
+// 16. Styles de page (hors .twentyseventeen-front-page)
+// 17. Plan de site
+// 18. Search
+// 19. Grid-accueil
+// 20. Caracts montgolfières
+// 21. Numéros de téléphone / Contact
+// 22. Légende terrains de décollage
+// 23. Timeline Histoire des ballons
+// 24. Tableau des tarifs
+// 25. Alignement numeros de tel
+// 26. Page à propos - Qui sommes-nous
+// 27. Galerie - Partenaires
+// 28. Carte des Terrains
+// 29. Événements
+// ----------------------------------
 
-// palette Charente Montgolfières
+
+// 1. Palette générale Charente Montgolfières
 $mainColor: #ef562d	// H1..n, couleur principale  
 $altColor: #8d7963 	// couleur alternative
 $altColorTr: #c6bcb1 // "" tramée
@@ -30,7 +65,7 @@ $or: #d2ab67
 $argent: #a7a9ac
 $bronze: #a86127     
 
-// fonctions globales
+// 2. Fonctions globales
 =css3($prop,$val)
 	#{$prop}: $val
 	-webkit-#{$prop}: $val
@@ -101,10 +136,8 @@ $bronze: #a86127
 
 // fonts
 @import 'https://fonts.googleapis.com/css?family=Capriola|Quattrocento+Sans';  // titres
-//@import 'https://fonts.googleapis.com/css?family=Overlock';  // textes
-//@import 'https://fonts.googleapis.com/css?family=Lato';
 
-// -Styles globaux-
+// 3. Styles globaux-
 *
 	font-family: 'Quattrocento Sans'
 H1, H2, H3, H4
@@ -151,23 +184,24 @@ H3, H4
 	color: $mainColor
 	font-size: 20px
 
-// Menu principal
+// 4. Menu principal
 .navigation-top
 	background-color: rgba(243, 241, 239, .8) // $lightTaint33pc
 	border-bottom: 0 // 1px solid $mainColor
-	@media screen and (min-width: 48em)
-		.wrap
+	.wrap
+		@media screen and (min-width: 48em)
 			text-align: center
 			max-width: 960px; /* 1000px; - Voir styles.css */
 			.main-navigation
 				display: inline-block
+		@media screen and (min-width: 64em)  /* Tablet+ */
+			margin-right: -15px
+		@media screen and (min-width: 65em)  /* + */
+			margin-right: auto
 	A
 		color: $mainColor
-	//@media screen and (min-width: 48em)
-		font-size: 15px
 .main-navigation
 	box-shadow: none
-			
 .main-navigation a:hover
 	color: $altColor
 .main-navigation li li:hover > a, 
@@ -194,6 +228,10 @@ H3, H4
 	top: -100px
 	+css3(transition,all .5s ease-out)
 	left: 40%
+	@media screen and (min-width: 64em)  /* Tablet+ */
+		left: 43%
+	@media screen and (min-width: 65em)  /* + */
+		left: 40%
 	margin-left: -432px
 	width: 135px
 	z-index: 9
@@ -213,20 +251,26 @@ H3, H4
 	display: none
 	margin-bottom: 0
 
-// Numeros de tel apparaissant au survol
+// 5. Numeros de tel apparaissant au survol
 #tels
 	display: none
-	position: fixed
-	right: 103px
+	position: absolute
+	right: 3em
+	@media screen and (min-width: 48em)
+		position: fixed
+		right: 103px
+		top: 70px !important
 	z-index: 20
 	background-color: $coulAssoc4
 	border-radius: 7px
 	font-size: 1em
 	color: white
-	top: 70px
 	padding: 5px
 	display: inline-block
 	width: 270px
+	@media screen and (max-width: 47.8em) and (orientation: landscape)
+		width: 300px
+		right: 8em
 	@media screen and (min-width: 48em)
 		&:before
 			content: '\25B2'
@@ -251,10 +295,10 @@ H3, H4
 	#tels
 		top: 100px
 
-// Menu version Mobile et Tablet
+// 6. Menu version Mobile et Tablet
 @media screen and (max-width: 47.9em)
 	.navigation-top
-		position: fixed 
+		position: absolute 
 		top: 0
 		width: 100%
 		z-index: 10
@@ -328,6 +372,7 @@ H3, H4
 					display: block
 					A
 						background-color: transparent
+						padding: .62em
 						&:hover
 							background-color: transparent
 						.icon
@@ -350,7 +395,7 @@ H3, H4
 			height: 1.3em 
 
 	
-// Contact Form 7
+// 7. Contact Form 7
 .wpcf7-form
 	position: relative
 	.wpcf7-response-output
@@ -375,7 +420,7 @@ H3, H4
 		&.incomplet
 			border: 1px solid red !important 
 	
-// Fiche de renseignements
+// 8. Fiche de renseignements
 .formrens
 	.wpcf7-response-output
 		@media screen and (min-width: 48em)
@@ -395,9 +440,51 @@ H3, H4
 	.dform
 		font-weight: normal
 		color: $coulAssoc4
-	
+	// bouton Imprimer
+	.btn-print
+		display: inline-block
+		margin: 0 auto
+		margin-bottom: 40px
+		cursor: pointer
+		+bouton2()
+		&.btn-disabled
+			cursor: default
+			opacity: .5
+			&:hover
+				color: $altColor10pc
+		@media print 
+			display: none !important
+	// Suggestion de pays
+	#select-pays-container
+		//overflow: hidden
+		//max-height: 300px
+		#selectPays
+			overflow-x: hidden
+			overflow-y: auto
+			border-left: 1px solid $mainColor
+			border-right: 1px solid $mainColor
+			border-bottom: 1px solid $mainColor
+			width: 300px
+			max-height: 200px
+			LI
+				left: 0
+				padding: 5px 20px 5px 20px
+				color: $mainColor
+				list-style-type: none
+				&:before
+					content: ''
+				background-color: white
+				&:hover
+					background-color: $altColorTr
+	#resetForm
+		margin-left: 40px
+		background-color: $altColor
+		font-weight: normal 
+		&:hover, &:active, &:visited
+			background-color: $altColorTr
+	  
    
-// Menu Social
+// 9. Menu Social
 @media screen and (min-width: 48em)
 	.social-navigation
 		clear: none
@@ -452,7 +539,7 @@ H3, H4
 		width: 22px
 		vertical-align: top
 
-	
+// 10. Site branding	
 // Le grand visuel d'accueil contient une ombre en dégradé
 //.custom-header-media
 	&:before	
@@ -477,31 +564,7 @@ H3, H4
 .twentyseventeen-front-page.page-one-column .entry-header
 	margin-bottom: 2em 
 
-// Content-Views
-.pt-cv-wrapper .btn-success,
-.pt-cv-wrapper .btn-success.active, 
-.pt-cv-wrapper .btn-success:active, 
-.pt-cv-wrapper .btn-success:hover, 
-.pt-cv-wrapper .btn-success:focus, 
-.pt-cv-wrapper .btn-success.focus,
-.pt-cv-wrapper .open>.dropdown-toggle.btn-success,
-.pt-cv-wrapper .open>.dropdown-toggle.btn-success:focus,
-.pt-cv-wrapper .open>.dropdown-toggle.btn-success:hover,
-.pt-cv-wrapper .open>.dropdown-toggle.btn-success:active,
-.pt-cv-wrapper .open>.dropdown-toggle.btn-success.active,
-.postl,
-.postl:active,
-.postl:focus
-	background-color: transparent
-	border: 0
-	color: $altColor
-	border-radius: 0
-	padding: 3px 6px
-	.icon
-		top: -0.3em
-		left: -0.2em
-
-
+// 11. Panel content
 .panel-content
 	.wrap,
 	#primary
@@ -542,7 +605,7 @@ H3, H4
 		text-decoration: underline
 
 // panel4 - Nous contacter - Accueil
-#panel4
+//#panel4
 	//background-color: #c3d8a5  //$footerTaint2  #5c7148
 	background: #afd3cc  /* fallback for old browsers */
 	background: -webkit-linear-gradient(to bottom, #afd3cc, #5c7148)  /* Chrome 10-25, Safari 5.1-6 */
@@ -560,7 +623,7 @@ H3, H4
 	INPUT[type=submit]
 		+bouton2()
 	
-// pied de page	
+// 12. pied de page	
 .site-footer
 	background-color: $footerTaint
 	border-top: 1px dotted $altColor
@@ -568,8 +631,6 @@ H3, H4
 	H2
 		color: $mainColor
 		font-size: 14px
-	
-// pied de page - contenu
 .site-info
 	text-align: center 
 	float: none
@@ -582,7 +643,7 @@ H3, H4
 			color: $lightTaint33pc
 			box-shadow: inset 0 0 0 rgba(0, 0, 0, 0), 0 1px 0 rgba(254, 161, 38, .6)
   
-// nous-trouver
+// 13. nous-trouver
 .nous-trouver
 	@media screen and (min-width: 48em)
 		float: left
@@ -622,15 +683,15 @@ H3, H4
 	#select-pays-container
 		position: absolute
 		z-index: 10
-		width: 200px
-		height: 200px
-		display: inline-block
+		width: 300px
+		//height: 200px
+		//display: inline-block
 	#pays
 		position: relative
 	#selectPays 
 		height: 100%
 		
-
+// 14. Media print
 .print-legal
 	display: none
 @media print
@@ -670,25 +731,23 @@ H3, H4
 	.site-footer
 		display: none
 
-// Fiche de renseignements
-// bouton Imprimer
-.btn-print
-	display: inline-block
-	margin: 0 auto
-	margin-bottom: 40px
-	cursor: pointer
-	+bouton2()
-	&.btn-disabled
-		cursor: default
-		opacity: .5
-		&:hover
-			color: $altColor10pc
-	@media print 
-		display: none !important
 
 
 
+// 15. twentyseventeen-front-page
 BODY.twentyseventeen-front-page
+	@media screen and (max-width: 47.8em)
+		.panel-content 
+			.wrap
+				padding-top: 3.75em
+		&.admin-bar
+			.panel-content
+				.wrap
+					padding-top: 4em
+		H1,
+		DIV.motto
+			text-align: center
+			margin-bottom: 0
 	@media screen and (min-width: 48em)
 		H1
 			color: $coulAssoc9
@@ -718,7 +777,6 @@ BODY.twentyseventeen-front-page
 			.panel-content
 				.wrap
 					padding-top: 4em
-		
 		// Hauteur du bandeau top - Accueil
 		.site-navigation-fixed.navigation-top
 			height: 125px
@@ -779,7 +837,7 @@ BODY.twentyseventeen-front-page
 	
 	
 	
-// Styles de page (hors .twentyseventeen-front-page)
+// 16. Styles de page (hors .twentyseventeen-front-page)
 BODY:not(.twentyseventeen-front-page)
 	// Hauteur du bandeau top - Page
 	@media screen and (min-width: 48em) and (max-width: 64em) 
@@ -859,7 +917,7 @@ BODY:not(.twentyseventeen-front-page)
 			padding: .8em 1.6em
 	
 
-// plan site
+// 17. Plan de site
 .plan-site
 	@media screen and (min-width: 48em)
 		.menu-menu-superieur-container
@@ -908,7 +966,7 @@ BODY:not(.twentyseventeen-front-page)
 		margin-left: 10px
 		
 
-// search
+// 18. Search
 .search-form .search-submit
 	background-color: $mainColor
 // gotoTop
@@ -932,33 +990,13 @@ BODY:not(.twentyseventeen-front-page)
 		top: 5px
 		left: 3px
 
-// WP MCM
-//.gallery-caption
-	text-align: center
-	padding: 0
-	margin: 0
-	font-style: normal
-	font-size: 14px
-
-// page Equipe
-//@media screen and (min-width: 48em)
-	.col-12
-		float: left
-		width: 100%
-		text-align: left
-		IMG
-			width: 38.5%
-	.wp-caption
-		width: 30%!important
-//.col-12
-	margin-bottom: 20px
-	IMG
-		margin-bottom: 10px
+	
 .wp-caption
 	font-size: 0.95rem
 	font-style: normal
 	text-align: center
 
+// 19. Grid-accueil
 //
 // Grid-accueil
 //
@@ -1167,14 +1205,7 @@ BODY:not(.twentyseventeen-front-page)
 		margin: 20px 40px 20px 40px
 	A
 		+boutonMore()
-//.bloc-paiements
-	text-align: center
-	padding: 40px
-	background-color: #ddf1f5
-	border-top: 1px solid $coulAssoc9
-	STRONG, B
-		text-transform: uppercase
-		font-weight: normal
+
 // grid-accueil - affichage par défaut
 .grid-accueil.defaut
 	DIV.thumb
@@ -1202,7 +1233,7 @@ BODY:not(.twentyseventeen-front-page)
 				font-weight: bold
 		
 
-// Caracts montgolfières
+// 20. Caracts montgolfières
 .caracts
 	@media screen and (min-width: 48em)
 		//width: 25%
@@ -1213,9 +1244,6 @@ BODY:not(.twentyseventeen-front-page)
 		width: 45%
 		&:nth-child(odd)
 			margin-right: 8%
-		//@media screen and (min-width: 48em)
-			width: 100%
-			float: none
 		H3
 			text-transform: uppercase
 			color: $coulAssoc4
@@ -1226,7 +1254,7 @@ BODY:not(.twentyseventeen-front-page)
 			color: $mainColor
 			font-size: 24px
 			font-weight: normal
-
+	
 H2.img50pc
 	padding-top 1.5em
 	line-height: 2.3em
@@ -1236,15 +1264,18 @@ H2.img50pc
 			width: 50%
 			border: 4px solid white
 			box-shadow: 0 1px 4px rgba(0,0,0,.1)
-// numéros de téléphone
+	
+// 21. Numéros de téléphone / Contact
 #telsnum
 	display: none
+
 	@media screen and (min-width: 48em)
 		position: fixed
 		top: 120px
 		&.montre
 			display: inline-block
-// légende terrains de décollage
+	
+// 22. Légende terrains de décollage
 .terrain
 	display: inline-block
 	margin-right: 20px
@@ -1255,7 +1286,7 @@ H2.img50pc
 		width: 26px
 		margin-right: 5px
 
-// Timeline
+// 23. Timeline Histoire des ballons
 DIV.timeline
 	padding-top: 40px
 	padding-bottom: 40px
@@ -1289,124 +1320,8 @@ DIV.timeline
 				top: -20px
 			@media screen and (min-width: 48em)
 				width: 50%
-	
-	
-// -Modal window-  #myModal
-BODY.modalOn
-	overflow: hidden
-.modal
-	.entry-content
-		padding: 0em 1.8em 0em 1.8em
-		overflow-y: auto
-	.content-area
-		width: 100%
-	position: fixed
-	top: 10px
-	right: 0
-	bottom: 0
-	left: 0
-	z-index: 1050
-	max-height: 630px
-	display: none
-	overflow: hidden
-	-webkit-overflow-scrolling: touch
-	outline: 0
-	&.fade
-		opacity: 0
-		-webkit-transition: opacity .15s linear
-		-o-transition: opacity .15s linear
-		transition: opacity .15s linear
-	&.fade.in 
-		opacity: 1
-		display: block
-	button.fermer
-		margin-left: -50px
-		position: relative
-		bottom: 1.2em
-		left: 50%
-		padding: 6px 12px
-		border-radius: 0
-		background-color: $coulAssoc4
-		font-size: 14px
-	
-// la hauteur de MW est gérée en JS
-.modal-body
-	//overflow: visible
-	margin-bottom: 10px
-	max-height: 406px
-	
-.modal-backdrop
-	position: fixed
-	top: 0
-	right: 0
-	bottom: 0
-	left: 0
-	z-index: 1040
-	background-color: #000
-	&.fade
-		opacity: 0
-		display: none
-	&.fade.in 
-		display: block
-		filter: alpha(opacity=80)
-		opacity: .8
-		-webkit-transition: opacity .15s linear
-		-o-transition: opacity .15s linear
-		transition: opacity .15s linear
 
-.modal-dialog
-	position: relative
-	top: 190px
-	margin: 0 auto
-	@media (max-width: 779px)
-		width: 96%
-		margin-right: 14px
-	@media (min-width: 780px)
-		width: 1000px
-.modal-header
-	height: 40px
-	.close
-		background-color: transparent
-		color: $mainColor
-		font-weight: bold
-		font-size: 24px
-		position: absolute
-		right: 0
-		padding: 10px 20px
-	
-@media (min-width: 768px)
-	.modal-content
-		-webkit-box-shadow: 0 5px 15px rgba(0,0,0,.5)
-		box-shadow: 0 5px 15px rgba(0,0,0,.5)
-.modal-content
-	max-height: 585px
-	position: relative
-	background-color: #fff
-	-webkit-background-clip: padding-box
-	background-clip: padding-box
-	border: 1px solid #999
-	border: 1px solid rgba(0,0,0,.2)
-	border-radius: 6px
-	outline: 0
-	-webkit-box-shadow: 0 3px 9px rgba(0,0,0,.5)
-	box-shadow: 0 3px 9px rgba(0,0,0,.5)
-.modal.in .modal-dialog
-	-webkit-transform: translate(0,0)
-	-ms-transform: translate(0,0)
-	-o-transform: translate(0,0)
-	transform: translate(0,0)
-
-.modal.fade .modal-dialog
-	-webkit-transition: -webkit-transform .3s ease-out
-	-o-transition: -o-transform .3s ease-out
-	transition: transform .3s ease-out
-	-webkit-transform: translate(0,-25%)
-	-ms-transform: translate(0,-25%)
-	-o-transform: translate(0,-25%)
-	transform: translate(0,-25%)	
-
-
-// Tableau des tarifs
+// 24. Tableau des tarifs
 .tarifs
 	display: block
 	text-align: center
@@ -1425,12 +1340,12 @@ BODY.modalOn
 		&:last-child
 			color: $mainColor
 	
-// Alignement numeros de tel
+// 25. Alignement numeros de tel
 span.tel
 	width: 4em // 51px
 	display: inline-block
 
-// page à propos - Qui sommes-nous
+// 26. Page à propos - Qui sommes-nous
 .apropos
 	cursor: pointer
 	@media screen and (min-width: 48em)
@@ -1443,7 +1358,7 @@ span.tel
 				padding-top: .6em
 				margin-right: 1.5em
 
-// Galerie - Partenaires
+// 27. Galerie - Partenaires
 .partenaire 
 	display: table
 	margin-bottom: 40px
@@ -1467,3 +1382,101 @@ span.tel
 	P
 		text-align: left
 		margin-bottom: .8em
+
+// 28. Carte des Terrains
+.carte 
+	position: relative
+	overflow: hidden
+	#map
+		height: 540px
+		width: 100%
+		overflow: hidden
+		border: thin solid #333
+	#capture
+		height: 540px
+		width: 300px
+		overflow: hidden
+		position: absolute
+		top: 0
+		right: -350px
+		background-color: #FFFFFF
+		border: thin solid #333
+		cursor: pointer
+		transition: all 0.5s ease-out
+		-webkit-transition: all 0.5s ease-out
+		-ms-transition: all 0.5s ease-out
+		H3
+			margin: 20px
+			padding: 0
+		P
+			margin: 0 20px 10px 20px
+			padding: 0
+		&:before
+			content: '\2716'
+			color: $mainColor
+			position: absolute
+			top: 20px
+			right: 20px
+		//.lieu
+		   display: none
+// 29. Événements
+#vsel > H3
+	color: $coulAssoc4
+	padding-top: 2em
+	padding-bottom: 2em
+H4.vsel-meta-title
+	padding: 10px 0 0 0
+	clear: none
+#vsel .vsel-meta
+	text-align: center
+	@media screen and (min-width: 48em)
+		width: 25%
+	.vsel-image-info
+		width: 70%
+		.vsel-image
+			margin-left: 3em
+.vsel-meta-link,
+.vsel-meta-location
+	text-align: left
+	margin-bottom: 15px !important
+	@media screen and (min-width: 48em)
+		text-align: center
+		margin-bottom: 0
+	.icon
+		fill: $mainColor
+		margin-right: 4px
+	.icon-balloon
+		height: 2em
+.cal
+	border: 1px solid $coulAssoc2
+	background-color: $coulAssoc2
+	border-radius: 7px
+	margin-bottom: 20px
+	.mois
+		color: white
+		text-align: center
+		font-size: 1.5em
+		text-transform: uppercase
+		width: 56%
+		display: inline-block
+	.jours
+		color: $mainColor
+		background-color: white
+		border-radius: 0 7px 7px 0
+		text-align: center
+		font-size: 2em
+		padding-top: .4em
+		padding-bottom: .4em
+		width: 44%
+		display: inline-block
+	@media screen and (min-width: 48em)
+		width: 149px
+		display: inline-block
+		.mois, .jours
+			display: block
+			width: 100%
+		.mois
+			padding-top: 1em
+			padding-bottom: 1em
+		.jours
+			border-radius: 0 0 7px 7px

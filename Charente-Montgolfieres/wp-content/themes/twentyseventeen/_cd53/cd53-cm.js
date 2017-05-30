@@ -1,7 +1,10 @@
 /*
  * DC avril 2017 - Charente Montgolfières
  * 0545670145 ou 0613298032 ou 0609935714
+ * V1 : 17 mai 2017
+ * V1a : ajout masque de saisie DateN
  */
+ var scripts_url = "http://tagethic.fr/c/charente-montgolfieres/wp-content/themes/twentyseventeen/_cd53/";
 (function( $ ) {
 	
 	// Affichage du social-navigation en différé.. à cause du temps de calcul
@@ -13,10 +16,13 @@
 		var phone = $("A[href='#phone']"), tels = $("#tels");
 		if ( phone.length && tels.length ) {
 			phone.mouseover(function() {
-				$("#tels").show();
+				var t = $(this).offset().top - 120;
+				tels.offset({ top: Math.round(t) });
+				$("#tels:hidden").show();
 			}).mouseout(function() {
-				$("#tels").hide();
+				$("#tels:visible").hide();
 			})	;
+			// $("#tels").click(function() { $("#tels").hide(); });
 		}
 	}
 	$(".social-navigation A").each(function() {
@@ -66,73 +72,248 @@
 		}
 	});
 	// 
+	//
 	// Formulaire - Fiche de renseignements
 	//
-	$(".formrens .wpcf7-form INPUT[type=email], .formrens .wpcf7-form INPUT[type=checkbox]").change(function() {
+	// 17 mai : ajout test saisie 'daten'  
+	var vEmails=false, vDaten=false, vCGV=false, vNom=false, vPrenom=false, vPoids=false, vTaille=false, vPhone=false, vPays=true, vAdresse=false;
+	var paysSelectionne="France";
+	$(".formrens .wpcf7-form INPUT[name=daten]").change(function() {
+		// RegExp : test with https://regex101.com/
+		var re = /^[0-9]{1,2}[/]{1}[0-9]{1,2}[/]{1}[0-9]{4}$/;
+		var x = $(this).val().split("/"),
+		err = "",
+		daten = $(this);
+		vDaten = false;
+		if (re.test( daten.val() )) {
+			// format à tester : jj/mm/aaaa
+			if ( ( x[0] >0 && x[0] <= 31) && ( x[1] >0 && x[1] <= 12) && ( x[2] >1920 && x[2] <= 2020) ) { 
+				vDaten = true;
+			} else {
+				if ( x[0] < 0 || x[0] > 31 ) { err += '<span role="alert" class="wpcf7-not-valid-tip err">Le jour est incorrect : '+x[0]+'</span>'; }
+				if ( x[1] > 12 ) { err += '<span role="alert" class="wpcf7-not-valid-tip err">Le mois est incorrect : '+x[1]+'</span>'; }
+				if ( x[2] < 1920 || x[2] > 2020 ) { err += '<span role="alert" class="wpcf7-not-valid-tip err">Êtes-vous sûr de l\'année de naissance : '+x[2]+'</span>'; }
+			}
+		}
+		if($(".err").length) {$(".err").remove(); }
+		if(! vDaten) {
+			if (err == "") {	err = '<span role="alert" class="wpcf7-not-valid-tip err">Format de date incorrect. Exemple : 31/01/1977</span>'; }
+			daten.after( err );
+		}
+	});
+	$(".formrens .wpcf7-form INPUT[type=checkbox]").change(function() {
+		var cgv = $(this);
+		if ( cgv.is(':checked')  ) { vCGV = true; } else { vCGV = false; }
+		if($(".err").length) {$(".err").remove(); }
+		if(! vCGV) {
+			var err = '<span role="alert" class="wpcf7-not-valid-tip err">Vous devez accepter les C.G.V.</span>';
+			cgv.after( err );
+		}
+	});
+	$(".formrens .wpcf7-form INPUT[name=nom]").change(function() {
+		var nom = $(this);	
+		// RegExp : test with https://regex101.com/
+		var re = /^[^&<>,?;.:/!§%*µ$£^¨+=})\]@\\_|\[\(\{#~0-9]+$/,
+			err = "";
+		vNom = false;
+		if (! re.test( nom.val() )) {  err = '<span role="alert" class="wpcf7-not-valid-tip err">Le nom est incorrect.</span>'; }
+		else { vNom = true; }
+		if($(".err").length) {$(".err").remove(); }
+		if(! vNom) {
+			if( err=="") { err = '<span role="alert" class="wpcf7-not-valid-tip err">Vous devez entrer un nom.</span>'; }
+			nom.after( err );
+		}
+	});
+	$(".formrens .wpcf7-form INPUT[name=prenom]").change(function() {
+		var prenom = $(this);
+		// RegExp : test with https://regex101.com/
+		var re = /^[^&<>,?;.:/!§%*µ$£^¨+=})\]@\\_|\[\(\{#~0-9]+$/,
+			err = "";
+		vPrenom = false;
+		if (! re.test( prenom.val() )) {  err = '<span role="alert" class="wpcf7-not-valid-tip err">Le prénom est incorrect.</span>'; }
+		else { vPrenom = true; }
+		if($(".err").length) {$(".err").remove(); }
+		if(! vPrenom) {
+			if( err=="") { err = '<span role="alert" class="wpcf7-not-valid-tip err">Vous devez entrer un prénom.</span>'; }
+			prenom.after( err );
+		}
+	});
+	$(".formrens .wpcf7-form INPUT[name=poids]").change(function() {
+		var poids = $(this);
+		// RegExp : test with https://regex101.com/
+		var re = /\d+/,
+			err = "";
+		vPoids = false;
+		if (! re.test( poids.val() )) {  err = '<span role="alert" class="wpcf7-not-valid-tip err">Le poids semble incorrect.</span>'; }
+		else { vPoids = true; }
+		if( poids.val() < 35 )  {  err += '<span role="alert" class="wpcf7-not-valid-tip err">Êtes-vous sûr du poids indiqué ?</span>';  vPoids = false; }
+		if( poids.val() > 150 )  {  err += '<span role="alert" class="wpcf7-not-valid-tip err">Êtes-vous sûr du poids indiqué ?</span>';  vPoids = false; }
+		if($(".err").length) {$(".err").remove(); }
+		if(! vPoids) {
+			if( err=="") { err = '<span role="alert" class="wpcf7-not-valid-tip err">Vous devez entrer un poids.</span>'; }
+			poids.after( err );
+		}
+	});
+	$(".formrens .wpcf7-form INPUT[name=taille]").change(function() {
+		var taille = $(this);
+		// RegExp : test with https://regex101.com/
+		var re = /\d+/,
+			err = "";
+		vTaille = false;
+		if (! re.test( taille.val() )) {  err += '<span role="alert" class="wpcf7-not-valid-tip err">La taille semble incorrecte.</span>'; }
+		else { vTaille = true; }
+		if( taille.val() < 140)  {  err += '<span role="alert" class="wpcf7-not-valid-tip err">La taille indiquée en cm est inférieure à celle requise.</span>';  vTaille = false; }
+		if( taille.val() > 220 )  {  err += '<span role="alert" class="wpcf7-not-valid-tip err">Êtes-vous sûr de la taille indiquée en cm ?</span>';  vTaille = false; }
+		if($(".err").length) {$(".err").remove(); }
+		if(! vTaille) {
+			if( err=="") { err = '<span role="alert" class="wpcf7-not-valid-tip err">Vous devez entrer une taille.</span>'; }
+			taille.after( err );
+		}
+	});
+	$(".formrens .wpcf7-form INPUT[name=phone]").change(function() {
+		var phone = $(this);
+		// RegExp : test with https://regex101.com/
+		var re = /^[+]{0,1}[0-9\(\). ]{6,20}$/,
+			err = "";
+		vPhone = false;
+		if (! re.test( phone.val() )) {  err += '<span role="alert" class="wpcf7-not-valid-tip err">Le numéro de téléphone semble incorrect.</span>'; }
+		else { vPhone = true; }
+
+		if($(".err").length) {$(".err").remove(); }
+		if(! vPhone) {
+			if( err=="") { err = '<span role="alert" class="wpcf7-not-valid-tip err">Vous devez entrer un numéro de téléphone.</span>'; }
+			phone.after( err );
+		}
+	});
+	$(".formrens .wpcf7-form INPUT[type=email]").change(function() {
 		var email = $(".formrens .wpcf7-form INPUT[name=email]"),
 		emailc = $(".formrens .wpcf7-form INPUT[name=emailconf]"),
-		cgv = $(".formrens .wpcf7-form INPUT[type=checkbox]"),
-		sub = $(".formrens .wpcf7-form INPUT[type=submit]");
-		
-		if ( email.val() == emailc.val() && email.val() !== "" ) { 
-			if ( cgv.is(':checked')  ) { sub.removeAttr("disabled").removeClass("btn-disabled"); }
+		err = "";		
+		// test consistence emails
+		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		if($(".err").length) {$(".err").remove(); }
+		if (! re.test( email.val() )) {
+			err = '<span role="alert" class="wpcf7-not-valid-tip err">Adresse email incorrecte.</span>';
+			email.after( err );
+		}
+		if (! re.test( emailc.val() )) {
+			err = '<span role="alert" class="wpcf7-not-valid-tip err">Adresse email de confirmation incorrecte.</span>';
+			emailc.after( err );
+		}
+		// test égalité des deux champs
+		if ( email.val() == emailc.val() ) { 
 			emailc.removeClass("incomplet");
 			emails = true;
+			vEmails = true;
 		} else {
-			sub.attr("disabled", "disabled").addClass("btn-disabled");
 			emailc.addClass("incomplet"); 
+			vEmails = false;
+			err = '<span role="alert" class="wpcf7-not-valid-tip err">Les deux adresses email ne sont pas équivalentes.</span>';
+			emailc.after( err );
 		}
 	});
 	
+	$(".formrens BUTTON").click(function() {
+		// Vérif globale de tous les champs
+		if($(".err").length) {$(".err").remove(); }
+		if(! vDaten) {
+			var err = '<span role="alert" class="wpcf7-not-valid-tip err">Format de date incorrect. Exemple : 31/01/1977</span>';
+			$(".formrens .wpcf7-form INPUT[name=daten]").after( err );
+		}
+		if(! vCGV) {
+			var err = '<span role="alert" class="wpcf7-not-valid-tip err">Vous devez accepter les C.G.V.</span>';
+			$(".formrens .wpcf7-form INPUT[type=checkbox]").after( err );
+		}
+		if(! vEmails) {
+			var err = '<span role="alert" class="wpcf7-not-valid-tip err">Les adresses email sont incomplètes.</span>';
+			$(".formrens .wpcf7-form INPUT[name=email]").after( err );
+		}
+		if(! vNom) {
+			var err = '<span role="alert" class="wpcf7-not-valid-tip err">Vous devez entrer un nom.</span>';
+			$(".formrens .wpcf7-form INPUT[name=nom]").after( err );
+		}
+		if(! vPrenom) {
+			var err = '<span role="alert" class="wpcf7-not-valid-tip err">Vous devez entrer un prénom.</span>';
+			$(".formrens .wpcf7-form INPUT[name=prenom]").after( err );
+		}
+		if(! vPoids) {
+			var err = '<span role="alert" class="wpcf7-not-valid-tip err">Vous devez entrer un poids.</span>';
+			$(".formrens .wpcf7-form INPUT[name=poids]").after( err );
+		}
+		if(! vTaille) {
+			var err = '<span role="alert" class="wpcf7-not-valid-tip err">Vous devez entrer une taille.</span>';
+			$(".formrens .wpcf7-form INPUT[name=taille]").after( err );
+		}
+		if(! vPhone) {
+			var err = '<span role="alert" class="wpcf7-not-valid-tip err">Vous devez entrer un numéro de téléphone.</span>';
+			$(".formrens .wpcf7-form INPUT[name=phone]").after( err );
+		}
+		if( $("#pays").val() !== paysSelectionne ) { vPays=false; }
+		if(! vPays) {
+			var err = '<span role="alert" class="wpcf7-not-valid-tip err">Vous devez sélectionner un pays.</span>';
+			$(".formrens .wpcf7-form INPUT[name=nationalite]").after( err );
+		}
+		if( $(".formrens .wpcf7-form TEXTAREA[name=adresse]").val() !== "" ) { vAdresse=true; }
+		if(! vAdresse) {
+			var err = '<span role="alert" class="wpcf7-not-valid-tip err">Vous devez entrer une adresse.</span>';
+			$(".formrens .wpcf7-form TEXTAREA[name=adresse]").after( err );
+		}
+		
+		// Dans le cas où tout est OK
+		if( vDaten && vCGV && vEmails && vNom && vPrenom && vPoids && vTaille && vPhone && vPays && vAdresse ) { 
+			window.print(); 
+			if( ! $("#resetForm").length ) { 
+				$(".formrens BUTTON").after( "<input type='button' id='resetForm' value='Vider les champs du formulaire'>" ); 
+				$("#resetForm").click(function() {
+					$(".formrens .wpcf7-form")[0].reset();
+					vEmails=false; vDaten=false; vCGV=false; vNom=false; vPrenom=false; vPoids=false; vTaille=false; vPhone=false; vPays=true; vAdresse=false;
+					paysSelectionne="France";
+					if($(".err").length) {$(".err").remove(); }
+				});
+			}
+		}
+		
+	});
+	
 	
 	//
-	// Ajax - Liste des Pays
-	//
-	var listepays = [
-      "ActionScript",
-      "AppleScript",
-      "Asp",
-      "BASIC",
-      "C",
-      "C++",
-      "Clojure",
-      "COBOL",
-      "ColdFusion",
-      "Erlang",
-      "Fortran",
-      "Groovy",
-      "Haskell",
-      "Java",
-      "JavaScript",
-      "Lisp",
-      "Perl",
-      "États-Unis",
-      "PHP",
-      "Python",
-      "Ruby",
-      "Scala",
-      "Scheme"
-    ];
-	// $( "#pays" ).autoComplete({
-      // source: listepays
-    // });
+	// Liste des Pays
+	// var listepays = []
+	// 
 	$("#pays").on('change keyup paste', function () {
-		// doFiltre();
+		doFiltre();
 	});
+	var paysloaded=false;
+	if ( $("#pays").length ) {
+		var url = scripts_url+"liste-pays.js";
+		$.getScript( url )
+		  .done(function( script, textStatus ) {
+			paysloaded=true;
+		  });
+	}
 
 	function doFiltre() {
 		
-		var str = $("#pays").val().toLowerCase(),
-		ext = $.grep( listepays , function( n, i ) {  return (n.toLowerCase().indexOf(str) == 0); }),
-		out = '<select id=\"selectPays\" multiple>';
-		for(i=0;i<ext.length;i++) { out += "<option>"+ext[i]+"</option>"; }
-		out += "</select>";
-		
-		if(! $("#selectPays").length ) {$("#pays").after(out); }
-		var sel = $("#selectPays");
-		sel.show();  
-		sel.blur(function(){sel.hide();});
-		$("#selectPays OPTION").click(function() { $("#pays").val( $(this).text() ); sel.hide(); });
+		if (  paysloaded && typeof listepays === "object" ) {
+			if ($("#pays").val() !== "") {
+				
+				var str = $("#pays").val().toLowerCase(),
+				ext = $.grep( listepays , function( n, i ) {  return (n.toLowerCase().indexOf(str) == 0); }),
+				out = '<ul id=\"selectPays\">';
+				for(i=0;i<ext.length;i++) { out += "<li>"+ext[i]+"</li>"; }
+				out += "</ul>";
+				
+				if(! $("#select-pays-container").length ) { $("#pays").after("<div id=\"select-pays-container\"></div>");  }
+				
+				var sel = $("#select-pays-container");
+				sel.html( out );  
+				$("#selectPays").mouseover(function() { $(this).focus(); $("#pays").blur(); });
+				$("#pays").mouseover(function() { $(this).focus(); });
+				$('.formrens').click(function() { sel.html(''); });
+				$("#selectPays LI").click(function() { $("#pays").val( $(this).text() ); sel.html(""); paysSelectionne=$(this).text(); vPays=true; });
+				
+			}
+		}
 	}
 	
 	
@@ -141,22 +322,8 @@
 	// sub menu to toggle on click
 	// DC : voir navigation.js dans theme\assets\js
 	
-	/*
-	$(".btn-print").click(function() {
-		if(! $(this).hasClass("btn-disabled") ) { window.print(); }
-	});
-	*/
 	
-	// test .formrens onSubmit
-	var wpcf7Elm = document.querySelector( '.formrens .wpcf7' );
-	if (wpcf7Elm) {
-		wpcf7Elm.addEventListener( 'wpcf7mailsent', function( event ) {  // wpcf7submit
-			sub = $(".formrens .wpcf7-form INPUT[type=submit]");
-			sub.attr("disabled", "disabled").addClass("btn-disabled");
-			window.print();
-			return false;
-		}, false );
-	}
+
 	
 	/*
 	 * à propos : rendre les boites cliquables
@@ -176,7 +343,6 @@
 			}
 		});
 	// goto Top
-	// if(! $("#gotoTop").length) {$("body").append("<div id='gotoTop'>^</div>");}
 	$(window).scroll(function() {
 		if ($(this).scrollTop() >= 150) {        
 			$('#gotoTop').fadeIn(200); 
@@ -190,40 +356,6 @@
 		}, 500);
 	});
 	
-	// Ouverture en MW
-	function ouvreMW( lien, e ) {
-		var mdlw = '  <div class="modal fade" id="myModal"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><button type="button" class="close mdlwclose" data-dismiss="modal">&times;</button></div><div class="modal-body"><p>...</p></div><button class="fermer">Fermer</button></div></div></div><div class="modal-backdrop fade in"></div>';
-		//
-		e.preventDefault();
-		event.stopImmediatePropagation();
-		// initialisation MW avec un contenu transitoire
-		if(! $("#myModal").length) { 	$("BODY").append(mdlw); }
-		var a = lien.attr("href"), H = screen.availHeight, offset = lien.offset().top - 100;
-		$("#myModal .modal-body").html("<header class='entry-header'> <h1 class='entry-title'>. . .</h1></header>");		
-		$("#myModal").addClass("in");
-		$("#myModal, .modal-backdrop").addClass("in");
-		$(".modal-header, .modal button, .modal-backdrop").click(function(){
-			$("#myModal, .modal-backdrop").removeClass("in");
-			$("BODY").removeClass("modalOn");
-			//$('html,body').animate({'scrollTop' : offset}, 10); // pour ramener au bon niveau une fois MW fermé
-			}); 
-		//
-		// Chargement du contenu en async
-		$.ajax({
-			url : a,
-			type : 'POST',			  /* voir single.php */
-			data: { mw : 'mw' },  /* permet de différencier l'appel normal du Post */  
-			success : function(rep) {  
-				$("#myModal .modal-body").html(rep);	
-				//$(".modal").css("max-height", (H * .85) +"px");
-				//$(".modal-body").css("max-height", (H * .7) +"px");
-				$("BODY").addClass("modalOn");
-			}
-		});
-		
-		return false;
-		
-	}
 	
 })( jQuery );
 	
